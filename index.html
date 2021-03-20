@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>hrm</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="main">
+            <div id="left">
+                <button id="add-employee">+ Добавить сотрудника</button>
+                <div id="list"></div>
+            </div>
+            <div class="right">
+                <div id="hide">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="header">
+                    <div id="photo-upload">
+                        <input type="file" accept="image/jpeg,image/png,image/gif" name="" id="input-upload-photo" />
+                        <input type="submit" value="Загрузить" id="input-upload-photo-submit" />
+                    </div>
+                    <img src="" alt="" id="main-photo" />
+                    <p class="name"></p>
+                    <div class="calendar-field">
+                        <button id="open-calendar-btn"></button>
+                        <div class="calendar-opened">
+                            <p>Hi</p>
+                        </div>
+                        <div class="calendar-display-main"></div>
+                        <div class="calendar-display-main"></div>
+                        <div class="calendar-display-main"></div>
+                    </div>
+                    <div id="settings">
+                        <button id="change-photo-btn">Загрузить фото профиля</button>
+                        <button id="edit-mode-btn">Изменить данные</button>
+                        <button id="delete-emloyee-btn">Удалить пользователя</button>
+                        <button id="add-field-btn">Добавить поле</button>
+                        <button id="discard">Отменить изменения</button>
+                        <button id="save">Сохранить в бд</button>
+                    </div>
+                </div>
+                <div id="content"></div>
+            </div>
+        </div>
+        <script>
+            "use strict";
+            let editModeBool = false;
+            let newFieldBool = false;
+            let newEmployeeBool = false;
+            let content = document.getElementById("content");
+
+            let _id;
+            let currentEmployee = {};
+
+            lockUnlockButtons(false, true, true, true, true, true, true, true);
+            document.onload = getList();
+            document.getElementById("add-employee").onclick = createEmployee;
+            document.getElementById("open-calendar-btn").onclick = displayCalendar;
+            document.getElementById("input-upload-photo-submit").onclick = photoUpload;
+            document.getElementById("edit-mode-btn").onclick = openEditMode;
+            document.getElementById("delete-emloyee-btn").onclick = deleteEmployee;
+            document.getElementById("add-field-btn").onclick = addField;
+            document.getElementById("discard").onclick = discardChanges;
+            document.getElementById("save").onclick = saveChanges;
+            document.getElementById("hide").onclick = () => {
+                document.getElementById("left").classList.toggle("hidden");
+            };
+            document.getElementById("change-photo-btn").onclick = () => {
+                document.getElementsByClassName("photo-upload")[0].classList.toggle("active");
+            };
+
+            function lockUnlockButtons(add, calendar, photo, editMode, deleteBtn, addFied, discard, save) {
+                document.getElementById("add-employee").disabled = add;
+                document.getElementById("open-calendar-btn").disabled = calendar;
+                document.getElementById("change-photo-btn").disabled = photo;
+                document.getElementById("edit-mode-btn").disabled = editMode;
+                document.getElementById("delete-emloyee-btn").disabled = deleteBtn;
+                document.getElementById("add-field-btn").disabled = addFied;
+                document.getElementById("discard").disabled = discard;
+                document.getElementById("save").disabled = save;
+            }
+
+            function getList() {
+                document.getElementById("list").innerHTML = "";
+                for (let i = 0; i < localStorage.length; i++) {
+                    let a = JSON.parse(localStorage.getItem(i));
+                    createListItem(a, i);
+                }
+            }
+
+            function createListItem(employee, key) {
+                let list = document.getElementById("list");
+                let div = document.createElement("div");
+                let img = document.createElement("img");
+                let p = document.createElement("p");
+                div.className = "list-item";
+                p.innerHTML = employee.name;
+                div.appendChild(img);
+                div.appendChild(p);
+                div.onclick = () => getEmloyeeDataFromStorage(key);
+                list.appendChild(div);
+            }
+
+            function getEmloyeeDataFromStorage(key) {
+                currentEmployee = JSON.parse(localStorage.getItem(key));
+                _id = key;
+                lockUnlockButtons(false, false, false, false, false, true, true, true);
+                dispayData(false);
+            }
+
+            function createEmployee() {
+                currentEmployee = {};
+                content.innerHTML = "";
+                lockUnlockButtons(true, true, true, true, true, false, false, false);
+                newEmployeeBool = true;
+            }
+
+            function dispayData(contenteditable) {
+                content.innerHTML = "";
+                for (const key in currentEmployee) {
+                    let div = document.createElement("div");
+                    if (contenteditable) {
+                        div.innerHTML = `<span>${key}</span> : <span contenteditable>${currentEmployee[key]}</span>`;
+                    } else {
+                        div.innerHTML = `<span>${key}</span> : <span>${currentEmployee[key]}</span>`;
+                    }
+                    content.appendChild(div);
+                }
+            }
+
+            function displayCalendar() {
+                console.log("function displayCalendar");
+            }
+
+            function photoUpload() {
+                document.getElementsByClassName("photo-upload")[0].
+                console.log("function photoUpload");
+                let input = document.getElementById("input-upload-photo");
+                if (!input.files[0]) {
+                    alert("Файл не выбран");
+                }
+                console.log(input.files[0]);
+            }
+
+            function openEditMode() {
+                console.log("function openEditMode");
+                lockUnlockButtons(true, true, true, true, true, false, false, false);
+                dispayData(true);
+            }
+
+            function closeEditMode() {
+                console.log("function closeEditMode");
+                lockUnlockButtons(false, false, false, false, false, true, true, true);
+                dispayData(false);
+            }
+
+            function deleteEmployee() {
+                if (confirm(`Вы действительно хотите удалить "${currentEmployee.name}"`)) {
+                    localStorage.removeItem(_id);
+                    lockUnlockButtons(false, true, true, true, true, true, true, true);
+                    getList();
+                }
+            }
+
+            function addField() {
+                if (newFieldBool) {
+                    return;
+                } else {
+                    content.innerHTML += '<textarea class="key"></textarea> : <textarea class="value"></textarea>';
+                    newFieldBool = true;
+                }
+            }
+
+            function discardChanges() {
+                if (newEmployeeBool) {
+                    newEmployeeBool = false;
+                    content.innerHTML = "";
+                    lockUnlockButtons(false, true, true, true, true, true, true, true);
+                } else {
+                    closeEditMode(false);
+                    newFieldBool = false;
+                }
+            }
+
+            function saveChanges() {
+                console.log("function saveChanges");
+                if (newEmployeeBool) {
+                    if (newFieldBool) {
+                        currentEmployee[
+                            content.getElementsByClassName("key")[0].value
+                        ] = content.getElementsByClassName("value")[0].value;
+                        localStorage.setItem(localStorage.length, JSON.stringify(currentEmployee));
+                    } else {
+                        return;
+                    }
+                } else {
+                    if (newFieldBool) {
+                        for (let i = 0; i < content.children.length - 2; i++) {
+                            currentEmployee[content.children[i].firstChild.innerHTML] =
+                                content.children[i].lastChild.innerHTML;
+                        }
+                        currentEmployee[
+                            content.getElementsByClassName("key")[0].value
+                        ] = content.getElementsByClassName("value")[0].value;
+                    } else {
+                        for (const key of content.children) {
+                            currentEmployee[key.firstChild.innerHTML] = key.lastChild.innerHTML;
+                        }
+                    }
+                    for (const key in currentEmployee) {
+                        if (currentEmployee[key] == "") {
+                            delete currentEmployee[key];
+                        }
+                    }
+                    localStorage.setItem(_id, JSON.stringify(currentEmployee));
+                }
+                newEmployeeBool = false;
+                newFieldBool = false;
+                closeEditMode();
+                getList();
+            }
+
+            function parseCalendar(employee) {
+                console.log("function parseCalendar");
+            }
+        </script>
+    </body>
+</html>
