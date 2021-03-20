@@ -234,7 +234,7 @@ p {
     width: 300px;
     height: 100px;
 }
-.photo-upload.active {
+#photo-upload.active {
     display: inline;
 }
 .name-field {

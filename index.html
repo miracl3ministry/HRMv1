@@ -71,7 +71,7 @@
                 document.getElementById("left").classList.toggle("hidden");
             };
             document.getElementById("change-photo-btn").onclick = () => {
-                document.getElementsByClassName("photo-upload")[0].classList.toggle("active");
+                document.getElementById("photo-upload").classList.toggle("active");
             };
 
             function lockUnlockButtons(add, calendar, photo, editMode, deleteBtn, addFied, discard, save) {
@@ -111,6 +111,7 @@
                 _id = key;
                 lockUnlockButtons(false, false, false, false, false, true, true, true);
                 dispayData(false);
+                closePhotoUpload();
             }
 
             function createEmployee() {
@@ -118,6 +119,7 @@
                 content.innerHTML = "";
                 lockUnlockButtons(true, true, true, true, true, false, false, false);
                 newEmployeeBool = true;
+                closePhotoUpload();
             }
 
             function dispayData(contenteditable) {
@@ -137,20 +139,26 @@
                 console.log("function displayCalendar");
             }
 
+            function closePhotoUpload() {
+                document.getElementById("photo-upload").classList.remove("active");
+                document.getElementById("input-upload-photo").value = "";
+            }
+
             function photoUpload() {
-                document.getElementsByClassName("photo-upload")[0].
-                console.log("function photoUpload");
                 let input = document.getElementById("input-upload-photo");
                 if (!input.files[0]) {
                     alert("Файл не выбран");
                 }
-                console.log(input.files[0]);
+                let file = input.files[0];
+                console.log(file);
+                closePhotoUpload();
             }
 
             function openEditMode() {
                 console.log("function openEditMode");
                 lockUnlockButtons(true, true, true, true, true, false, false, false);
                 dispayData(true);
+                closePhotoUpload();
             }
 
             function closeEditMode() {
@@ -163,6 +171,7 @@
                 if (confirm(`Вы действительно хотите удалить "${currentEmployee.name}"`)) {
                     localStorage.removeItem(_id);
                     lockUnlockButtons(false, true, true, true, true, true, true, true);
+                    closePhotoUpload();
                     getList();
                 }
             }
