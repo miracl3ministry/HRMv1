@@ -233,9 +233,45 @@ p {
     background-color: darkgrey;
     width: 300px;
     height: 100px;
+    z-index: 1;
 }
 #photo-upload.active {
     display: inline;
+}
+.red-alert {
+    color: red;
+}
+#error-window {
+    position: absolute;
+    display: inline;
+    margin: 20px;
+    top: 10%;
+    background-color: darkgrey;
+    width: 300px;
+    height: 100px;
+    transition: opacity linear 0.3s;
+    opacity: 0;
+}
+#error-window.active {
+    -webkit-animation-name: fade;
+    animation-name: fade;
+    opacity: 1;
+}
+@-webkit-keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 .name-field {
     height: 20px;

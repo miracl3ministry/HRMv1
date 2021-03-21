@@ -21,9 +21,18 @@
                 </div>
                 <div class="header">
                     <div id="photo-upload">
-                        <input type="file" accept="image/jpeg,image/png,image/gif" name="" id="input-upload-photo" />
-                        <input type="submit" value="Загрузить" id="input-upload-photo-submit" />
+                        <p>
+                            Введите полный путь или ссылку на фото
+                            <input
+                                type="text"
+                                id="path-to-photo"
+                                placeholder="C:\отдел кадров\сотрудник N\фото.jpg"
+                                required
+                            />
+                        </p>
+                        <input type="button" value="Сохранить" id="input-upload-photo-submit" />
                     </div>
+                    <div id="error-window"></div>
                     <img src="" alt="" id="main-photo" />
                     <p class="name"></p>
                     <div class="calendar-field">
@@ -98,6 +107,9 @@
                 let div = document.createElement("div");
                 let img = document.createElement("img");
                 let p = document.createElement("p");
+                if (employee._pathToPhoto) {
+                    img.src = employee._pathToPhoto;
+                }
                 div.className = "list-item";
                 p.innerHTML = employee.name;
                 div.appendChild(img);
@@ -111,27 +123,43 @@
                 _id = key;
                 lockUnlockButtons(false, false, false, false, false, true, true, true);
                 dispayData(false);
+                if (currentEmployee._pathToPhoto) {
+                    document.getElementById("main-photo").src = currentEmployee._pathToPhoto;
+                } else {
+                    document.getElementById("main-photo").src = "";
+                }
                 closePhotoUpload();
             }
 
             function createEmployee() {
                 currentEmployee = {};
                 content.innerHTML = "";
+                document.getElementById("main-photo").src = "";
                 lockUnlockButtons(true, true, true, true, true, false, false, false);
                 newEmployeeBool = true;
+                let div = document.createElement("div");
+                let p = document.createElement("p");
+                p.innerHTML = "Новый сотрудник";
+                div.className = "list-item";
+                div.id = "new-employee-li";
+                div.appendChild(p);
+                document.getElementById("list").appendChild(div);
                 closePhotoUpload();
             }
 
             function dispayData(contenteditable) {
                 content.innerHTML = "";
                 for (const key in currentEmployee) {
-                    let div = document.createElement("div");
-                    if (contenteditable) {
-                        div.innerHTML = `<span>${key}</span> : <span contenteditable>${currentEmployee[key]}</span>`;
+                    if (key[0] == "_") {
                     } else {
-                        div.innerHTML = `<span>${key}</span> : <span>${currentEmployee[key]}</span>`;
+                        let div = document.createElement("div");
+                        if (contenteditable) {
+                            div.innerHTML = `<span>${key}</span> : <span contenteditable>${currentEmployee[key]}</span>`;
+                        } else {
+                            div.innerHTML = `<span>${key}</span> : <span>${currentEmployee[key]}</span>`;
+                        }
+                        content.appendChild(div);
                     }
-                    content.appendChild(div);
                 }
             }
 
@@ -141,28 +169,45 @@
 
             function closePhotoUpload() {
                 document.getElementById("photo-upload").classList.remove("active");
-                document.getElementById("input-upload-photo").value = "";
             }
 
             function photoUpload() {
-                let input = document.getElementById("input-upload-photo");
-                if (!input.files[0]) {
-                    alert("Файл не выбран");
+                let pathToFile = document.getElementById("path-to-photo").value;
+                if (pathToFile) {
+                    currentEmployee._pathToPhoto = pathToFile;
+                    let img = document.getElementById("main-photo");
+                    img.onerror = (e) => {
+                        document.getElementById("error-window").innerHTML =
+                            '<p class="red-alert">Ошибка, файл не найден</p>';
+                        document.getElementById("error-window").classList.toggle("active");
+                        setTimeout(() => {
+                            document.getElementById("error-window").classList.toggle("active");
+                        }, 2000);
+                        currentEmployee._pathToPhoto = "";
+                        return;
+                    };
+                    img.src = pathToFile;
+                    saveChanges();
+                    closePhotoUpload();
+                } else {
+                    if (document.getElementById("photo-upload").lastElementChild.nodeName === "P") {
+                        return;
+                    } else {
+                        let p = document.createElement("p");
+                        p.innerHTML = "Заполните поле";
+                        p.classList.add("red-alert");
+                        document.getElementById("photo-upload").appendChild(p);
+                    }
                 }
-                let file = input.files[0];
-                console.log(file);
-                closePhotoUpload();
             }
 
             function openEditMode() {
-                console.log("function openEditMode");
                 lockUnlockButtons(true, true, true, true, true, false, false, false);
                 dispayData(true);
                 closePhotoUpload();
             }
 
             function closeEditMode() {
-                console.log("function closeEditMode");
                 lockUnlockButtons(false, false, false, false, false, true, true, true);
                 dispayData(false);
             }
@@ -170,6 +215,7 @@
             function deleteEmployee() {
                 if (confirm(`Вы действительно хотите удалить "${currentEmployee.name}"`)) {
                     localStorage.removeItem(_id);
+                    document.getElementById("main-photo").src = "";
                     lockUnlockButtons(false, true, true, true, true, true, true, true);
                     closePhotoUpload();
                     getList();
@@ -187,17 +233,16 @@
 
             function discardChanges() {
                 if (newEmployeeBool) {
-                    newEmployeeBool = false;
                     content.innerHTML = "";
+                    document.getElementById("new-employee-li").remove();
                     lockUnlockButtons(false, true, true, true, true, true, true, true);
-                } else {
-                    closeEditMode(false);
-                    newFieldBool = false;
+                    newEmployeeBool = false;
                 }
+                closeEditMode();
+                newFieldBool = false;
             }
 
             function saveChanges() {
-                console.log("function saveChanges");
                 if (newEmployeeBool) {
                     if (newFieldBool) {
                         currentEmployee[
