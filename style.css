@@ -226,7 +226,6 @@ p {
     cursor: pointer;
 }
 #photo-upload {
-    display: none;
     position: absolute;
     margin: 20px;
     top: 10%;
@@ -234,9 +233,13 @@ p {
     width: 300px;
     height: 100px;
     z-index: 1;
+    transition: opacity linear 0.3s;
+    opacity: 0;
 }
 #photo-upload.active {
-    display: inline;
+    -webkit-animation-name: fade;
+    animation-name: fade;
+    opacity: 1;
 }
 .red-alert {
     color: red;
@@ -257,22 +260,6 @@ p {
     animation-name: fade;
     opacity: 1;
 }
-@-webkit-keyframes fade {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-@keyframes fade {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
 .name-field {
     height: 20px;
 }
@@ -282,14 +269,20 @@ p {
     align-items: center;
     justify-content: center;
 }
-.calendar-opened {
-    display: none;
+#calendar-opened {
     position: absolute;
     margin: 20px;
-    top: 10%;
-    background-color: darkgrey;
+    top: 0;
+    background-color: #aaa;
     width: 300px;
-    height: 100px;
+    height: 200px;
+    transition: opacity linear 0.3s;
+    opacity: 0;
+}
+#calendar-opened.active {
+    -webkit-animation-name: fade;
+    animation-name: fade;
+    opacity: 1;
 }
 .calendar-display-main {
     width: 15px;
@@ -310,4 +303,20 @@ p {
 }
 #result {
     margin: 0;
+}
+@-webkit-keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

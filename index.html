@@ -36,8 +36,8 @@
                     <img src="" alt="" id="main-photo" />
                     <p class="name"></p>
                     <div class="calendar-field">
-                        <button id="open-calendar-btn"></button>
-                        <div class="calendar-opened">
+                        <button id="open-calendar-btn">Изменить график работы</button>
+                        <div id="calendar-opened">
                             <p>Hi</p>
                         </div>
                         <div class="calendar-display-main"></div>
@@ -165,6 +165,7 @@
 
             function displayCalendar() {
                 console.log("function displayCalendar");
+                document.getElementById("calendar-opened").classList.toggle("active");
             }
 
             function closePhotoUpload() {
@@ -177,18 +178,13 @@
                     currentEmployee._pathToPhoto = pathToFile;
                     let img = document.getElementById("main-photo");
                     img.onerror = (e) => {
-                        document.getElementById("error-window").innerHTML =
-                            '<p class="red-alert">Ошибка, файл не найден</p>';
-                        document.getElementById("error-window").classList.toggle("active");
-                        setTimeout(() => {
-                            document.getElementById("error-window").classList.toggle("active");
-                        }, 2000);
+                        alertError("Ошибка, файл не найден");
                         currentEmployee._pathToPhoto = "";
-                        return;
+                        saveChanges();
                     };
                     img.src = pathToFile;
-                    saveChanges();
                     closePhotoUpload();
+                    saveChanges();
                 } else {
                     if (document.getElementById("photo-upload").lastElementChild.nodeName === "P") {
                         return;
@@ -245,6 +241,10 @@
             function saveChanges() {
                 if (newEmployeeBool) {
                     if (newFieldBool) {
+                        if (content.getElementsByClassName("key")[0].value[0] == "_") {
+                            alertError('Ключ не должен начинаться с "_"');
+                            return;
+                        }
                         currentEmployee[
                             content.getElementsByClassName("key")[0].value
                         ] = content.getElementsByClassName("value")[0].value;
@@ -254,6 +254,10 @@
                     }
                 } else {
                     if (newFieldBool) {
+                        if (content.getElementsByClassName("key")[0].value[0] == "_") {
+                            alertError('Ключ не должен начинаться с "_"');
+                            return;
+                        }
                         for (let i = 0; i < content.children.length - 2; i++) {
                             currentEmployee[content.children[i].firstChild.innerHTML] =
                                 content.children[i].lastChild.innerHTML;
@@ -279,6 +283,13 @@
                 getList();
             }
 
+            function alertError(text) {
+                document.getElementById("error-window").innerHTML = `<p class="red-alert">${text}</p>`;
+                document.getElementById("error-window").classList.toggle("active");
+                setTimeout(() => {
+                    document.getElementById("error-window").classList.toggle("active");
+                }, 2000);
+            }
             function parseCalendar(employee) {
                 console.log("function parseCalendar");
             }
