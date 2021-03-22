@@ -56,7 +56,9 @@
                             <div class="calendar-table"></div>
                             <div class="calendar-settings">
                                 <button id="calendar-left">Влево</button>
-                                <button>Установить 5/2 с 8:00 до 17:00</button>
+                                <button id="calendar-set-5na2">Установить 5/2</button>
+                                <button id="calendar-clear">Очистить полностью</button>
+                                <button id="calendar-save">Сохранить</button>
                                 <button id="calendar-right">Вправо</button>
                             </div>
                         </div>
@@ -85,6 +87,7 @@
                 let eventMouseoutBool = false;
                 let calendarIsOpenBool = false;
                 let monthInput = 0;
+                let workingDays = [];
                 let content = document.getElementById("content");
 
                 let _id;
@@ -100,6 +103,9 @@
                 document.getElementById("add-field-btn").onclick = addField;
                 document.getElementById("discard").onclick = discardChanges;
                 document.getElementById("save").onclick = saveChanges;
+                document.getElementById("calendar-set-5na2").onclick = calendarSet5na2;
+                document.getElementById("calendar-clear").onclick = clearCalendar;
+                document.getElementById("calendar-save").onclick = saveCalendar;
                 document.getElementById("calendar-left").onclick = () => {
                     monthInput--;
                     document.querySelector("div.calendar-table").innerHTML = "";
@@ -162,6 +168,7 @@
                     } else {
                         document.getElementById("main-photo").src = "";
                     }
+                    workingDays = currentEmployee._calendar ?? [];
                     closePhotoUpload();
                 }
 
@@ -221,7 +228,7 @@
                         }, 100);
                         calendarIsOpenBool = true;
                         document.getElementById("calendar-opened").className = "active";
-                        renderCalendar();
+                        renderCalendar(monthInput);
                     }
                 }
 
@@ -348,8 +355,51 @@
                     }, 2000);
                 }
 
-                function parseCalendar(employee) {
-                    console.log("function parseCalendar");
+                function saveCalendar(employee) {
+                    if (document.querySelector("div.calendar-table").lastElementChild.nodeName === "P") {
+                        return;
+                    } else {
+                        currentEmployee._calendar = workingDays;
+                        let p = document.createElement("p");
+                        p.innerHTML = "сохранено";
+                        document.querySelector("div.calendar-table").appendChild(p);
+                        saveChanges();
+                    }
+                }
+
+                function calendarSet5na2(employee) {
+                    const year = new Date().getFullYear();
+                    const month = new Date().getMonth();
+                    const monthStart = month + (monthInput ?? 0);
+
+                    let lastWeekDay = new Date(year, monthStart + 1, 0).getDay();
+                    let startWeekDay = new Date(year, monthStart, 0).getDay();
+                    let dateStart = new Date(year, monthStart, 1 - startWeekDay);
+                    let dateEnd = new Date(year, monthStart + 1, 8 - lastWeekDay);
+
+                    for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
+                        if (dateStart.getDay() < 6 && dateStart.getDay() > 0) {
+                            workingDays.push(
+                                `${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`
+                            );
+                        } else {
+                            let i = workingDays.findIndex(
+                                (elem) =>
+                                    elem === `${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`
+                            );
+                            if (i > 0) workingDays.splice(i, 1);
+                        }
+                    }
+                    document.querySelector("div.calendar-table").innerHTML = "";
+                    renderCalendar(monthInput);
+                }
+
+                function clearCalendar() {
+                    if (confirm("Вы действительно хотите очистить кадендарь?")) {
+                        workingDays = [];
+                        document.querySelector("div.calendar-table").innerHTML = "";
+                        renderCalendar(monthInput);
+                    }
                 }
 
                 function renderCalendar(monthInput) {
@@ -379,12 +429,9 @@
                     let dateEnd = new Date(year, monthStart + 1, 8 - lastWeekDay);
                     let dateNow = new Date(year, month, today);
 
-                    console.log(monthStart, monthInput);
-
                     let weekElem = document.createElement("div");
                     let p = document.createElement("p");
-                    p.innerHTML = months[monthStart % 12];
-                    let weekElemNo = 0;
+                    p.innerHTML = months[monthStart % 12] + " " + year;
                     let monthToDisplay = monthStart;
                     weekElem.className = "week";
                     cell.appendChild(p);
@@ -394,10 +441,26 @@
                         monthToDisplay = dateStart.getMonth();
                         let day = document.createElement("div");
                         day.className = "day month" + monthToDisplay;
-                        day.innerHTML = dateStart.getDate();
-                        if (+dateStart == +dateNow) {
+                        day.dataset.date = `${dateStart.getDate()}-${monthToDisplay}-${year}`;
+                        if (workingDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
                             day.style.border = "5px solid lightblue";
                             day.style.margin = "0";
+                        }
+                        day.innerHTML = dateStart.getDate();
+                        day.onclick = () => {
+                            if (workingDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
+                                let i = workingDays.findIndex((elem) => elem === day.dataset.date);
+                                workingDays.splice(i, 1);
+                                day.style.border = "none";
+                                day.style.margin = "5px";
+                            } else {
+                                day.style.border = "5px solid lightblue";
+                                day.style.margin = "0";
+                                workingDays.push(day.dataset.date);
+                            }
+                        };
+                        if (+dateStart == +dateNow) {
+                            day.style.backgroundColor = "#ffc290";
                         }
                         weekElem.appendChild(day);
                         if (dateStart.getDay() == 0) {
