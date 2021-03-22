@@ -8,6 +8,11 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
+        <noscript>
+            <div class="no-script">
+                <p>Для работы необходим javascript</p>
+            </div>
+        </noscript>
         <div class="main">
             <div id="left">
                 <button id="add-employee">+ Добавить сотрудника</button>
@@ -37,8 +42,23 @@
                     <p class="name"></p>
                     <div class="calendar-field">
                         <button id="open-calendar-btn">Изменить график работы</button>
-                        <div id="calendar-opened">
-                            <p>Hi</p>
+                        <div id="calendar-opened" class="">
+                            <div class="week">
+                                <div class="day">Пн</div>
+                                <div class="day">Вт</div>
+                                <div class="day">Ср</div>
+                                <div class="day">Чт</div>
+                                <div class="day">Пт</div>
+                                <div class="day">Сб</div>
+                                <div class="day">Вс</div>
+                            </div>
+                            <hr />
+                            <div class="calendar-table"></div>
+                            <div class="calendar-settings">
+                                <button id="calendar-left">Влево</button>
+                                <button>Установить 5/2 с 8:00 до 17:00</button>
+                                <button id="calendar-right">Вправо</button>
+                            </div>
                         </div>
                         <div class="calendar-display-main"></div>
                         <div class="calendar-display-main"></div>
@@ -57,242 +77,343 @@
             </div>
         </div>
         <script>
-            "use strict";
-            let editModeBool = false;
-            let newFieldBool = false;
-            let newEmployeeBool = false;
-            let content = document.getElementById("content");
+            (() => {
+                "use strict";
+                let editModeBool = false;
+                let newFieldBool = false;
+                let newEmployeeBool = false;
+                let eventMouseoutBool = false;
+                let calendarIsOpenBool = false;
+                let monthInput = 0;
+                let content = document.getElementById("content");
 
-            let _id;
-            let currentEmployee = {};
+                let _id;
+                let currentEmployee = {};
 
-            lockUnlockButtons(false, true, true, true, true, true, true, true);
-            document.onload = getList();
-            document.getElementById("add-employee").onclick = createEmployee;
-            document.getElementById("open-calendar-btn").onclick = displayCalendar;
-            document.getElementById("input-upload-photo-submit").onclick = photoUpload;
-            document.getElementById("edit-mode-btn").onclick = openEditMode;
-            document.getElementById("delete-emloyee-btn").onclick = deleteEmployee;
-            document.getElementById("add-field-btn").onclick = addField;
-            document.getElementById("discard").onclick = discardChanges;
-            document.getElementById("save").onclick = saveChanges;
-            document.getElementById("hide").onclick = () => {
-                document.getElementById("left").classList.toggle("hidden");
-            };
-            document.getElementById("change-photo-btn").onclick = () => {
-                document.getElementById("photo-upload").classList.toggle("active");
-            };
+                lockUnlockButtons(false, true, true, true, true, true, true, true);
+                document.onload = getList();
+                document.getElementById("add-employee").onclick = createEmployee;
+                document.getElementById("open-calendar-btn").onclick = displayCalendar;
+                document.getElementById("input-upload-photo-submit").onclick = photoUpload;
+                document.getElementById("edit-mode-btn").onclick = openEditMode;
+                document.getElementById("delete-emloyee-btn").onclick = deleteEmployee;
+                document.getElementById("add-field-btn").onclick = addField;
+                document.getElementById("discard").onclick = discardChanges;
+                document.getElementById("save").onclick = saveChanges;
+                document.getElementById("calendar-left").onclick = () => {
+                    monthInput--;
+                    document.querySelector("div.calendar-table").innerHTML = "";
+                    renderCalendar(monthInput);
+                };
+                document.getElementById("calendar-right").onclick = () => {
+                    monthInput++;
+                    document.querySelector("div.calendar-table").innerHTML = "";
+                    renderCalendar(monthInput);
+                };
+                document.getElementById("hide").onclick = () => {
+                    document.getElementById("left").classList.toggle("hidden");
+                };
+                document.getElementById("change-photo-btn").onclick = () => {
+                    document.getElementById("photo-upload").classList.toggle("active");
+                };
 
-            function lockUnlockButtons(add, calendar, photo, editMode, deleteBtn, addFied, discard, save) {
-                document.getElementById("add-employee").disabled = add;
-                document.getElementById("open-calendar-btn").disabled = calendar;
-                document.getElementById("change-photo-btn").disabled = photo;
-                document.getElementById("edit-mode-btn").disabled = editMode;
-                document.getElementById("delete-emloyee-btn").disabled = deleteBtn;
-                document.getElementById("add-field-btn").disabled = addFied;
-                document.getElementById("discard").disabled = discard;
-                document.getElementById("save").disabled = save;
-            }
-
-            function getList() {
-                document.getElementById("list").innerHTML = "";
-                for (let i = 0; i < localStorage.length; i++) {
-                    let a = JSON.parse(localStorage.getItem(i));
-                    createListItem(a, i);
+                function lockUnlockButtons(add, calendar, photo, editMode, deleteBtn, addFied, discard, save) {
+                    document.getElementById("add-employee").disabled = add;
+                    document.getElementById("open-calendar-btn").disabled = calendar;
+                    document.getElementById("change-photo-btn").disabled = photo;
+                    document.getElementById("edit-mode-btn").disabled = editMode;
+                    document.getElementById("delete-emloyee-btn").disabled = deleteBtn;
+                    document.getElementById("add-field-btn").disabled = addFied;
+                    document.getElementById("discard").disabled = discard;
+                    document.getElementById("save").disabled = save;
                 }
-            }
 
-            function createListItem(employee, key) {
-                let list = document.getElementById("list");
-                let div = document.createElement("div");
-                let img = document.createElement("img");
-                let p = document.createElement("p");
-                if (employee._pathToPhoto) {
-                    img.src = employee._pathToPhoto;
-                }
-                div.className = "list-item";
-                p.innerHTML = employee.name;
-                div.appendChild(img);
-                div.appendChild(p);
-                div.onclick = () => getEmloyeeDataFromStorage(key);
-                list.appendChild(div);
-            }
-
-            function getEmloyeeDataFromStorage(key) {
-                currentEmployee = JSON.parse(localStorage.getItem(key));
-                _id = key;
-                lockUnlockButtons(false, false, false, false, false, true, true, true);
-                dispayData(false);
-                if (currentEmployee._pathToPhoto) {
-                    document.getElementById("main-photo").src = currentEmployee._pathToPhoto;
-                } else {
-                    document.getElementById("main-photo").src = "";
-                }
-                closePhotoUpload();
-            }
-
-            function createEmployee() {
-                currentEmployee = {};
-                content.innerHTML = "";
-                document.getElementById("main-photo").src = "";
-                lockUnlockButtons(true, true, true, true, true, false, false, false);
-                newEmployeeBool = true;
-                let div = document.createElement("div");
-                let p = document.createElement("p");
-                p.innerHTML = "Новый сотрудник";
-                div.className = "list-item";
-                div.id = "new-employee-li";
-                div.appendChild(p);
-                document.getElementById("list").appendChild(div);
-                closePhotoUpload();
-            }
-
-            function dispayData(contenteditable) {
-                content.innerHTML = "";
-                for (const key in currentEmployee) {
-                    if (key[0] == "_") {
-                    } else {
-                        let div = document.createElement("div");
-                        if (contenteditable) {
-                            div.innerHTML = `<span>${key}</span> : <span contenteditable>${currentEmployee[key]}</span>`;
-                        } else {
-                            div.innerHTML = `<span>${key}</span> : <span>${currentEmployee[key]}</span>`;
-                        }
-                        content.appendChild(div);
+                function getList() {
+                    document.getElementById("list").innerHTML = "";
+                    for (let i = 0; i < localStorage.length; i++) {
+                        let a = JSON.parse(localStorage.getItem(i));
+                        createListItem(a, i);
                     }
                 }
-            }
 
-            function displayCalendar() {
-                console.log("function displayCalendar");
-                document.getElementById("calendar-opened").classList.toggle("active");
-            }
+                function createListItem(employee, key) {
+                    let list = document.getElementById("list");
+                    let div = document.createElement("div");
+                    let img = document.createElement("img");
+                    let p = document.createElement("p");
+                    if (typeof employee._pathToPhoto !== "undefined") {
+                        img.src = employee._pathToPhoto;
+                    }
+                    div.className = "list-item";
+                    p.innerHTML = employee.name;
+                    div.appendChild(img);
+                    div.appendChild(p);
+                    div.onclick = () => getEmloyeeDataFromStorage(key);
+                    list.appendChild(div);
+                }
 
-            function closePhotoUpload() {
-                document.getElementById("photo-upload").classList.remove("active");
-            }
-
-            function photoUpload() {
-                let pathToFile = document.getElementById("path-to-photo").value;
-                if (pathToFile) {
-                    currentEmployee._pathToPhoto = pathToFile;
-                    let img = document.getElementById("main-photo");
-                    img.onerror = (e) => {
-                        alertError("Ошибка, файл не найден");
-                        currentEmployee._pathToPhoto = "";
-                        saveChanges();
-                    };
-                    img.src = pathToFile;
+                function getEmloyeeDataFromStorage(key) {
+                    currentEmployee = JSON.parse(localStorage.getItem(key));
+                    _id = key;
+                    lockUnlockButtons(false, false, false, false, false, true, true, true);
+                    dispayData(false);
+                    if (currentEmployee._pathToPhoto) {
+                        document.getElementById("main-photo").src = currentEmployee._pathToPhoto;
+                    } else {
+                        document.getElementById("main-photo").src = "";
+                    }
                     closePhotoUpload();
-                    saveChanges();
-                } else {
-                    if (document.getElementById("photo-upload").lastElementChild.nodeName === "P") {
+                }
+
+                function createEmployee() {
+                    currentEmployee = {};
+                    content.innerHTML = "";
+                    document.getElementById("main-photo").src = "";
+                    lockUnlockButtons(true, true, true, true, true, false, false, false);
+                    newEmployeeBool = true;
+                    let div = document.createElement("div");
+                    let p = document.createElement("p");
+                    p.innerHTML = "Новый сотрудник";
+                    div.className = "list-item";
+                    div.id = "new-employee-li";
+                    div.appendChild(p);
+                    document.getElementById("list").appendChild(div);
+                    closePhotoUpload();
+                }
+
+                function dispayData(contenteditable) {
+                    content.innerHTML = "";
+                    for (const key in currentEmployee) {
+                        if (key[0] == "_") {
+                        } else {
+                            let div = document.createElement("div");
+                            if (contenteditable) {
+                                div.innerHTML = `<span>${key}</span> : <span contenteditable>${currentEmployee[key]}</span>`;
+                            } else {
+                                div.innerHTML = `<span>${key}</span> : <span>${currentEmployee[key]}</span>`;
+                            }
+                            content.appendChild(div);
+                        }
+                    }
+                }
+
+                function displayCalendar() {
+                    if (calendarIsOpenBool) {
+                        document.removeEventListener("click", eventClickToClose);
+                        document.getElementById("calendar-opened").removeEventListener("mouseout", () => {
+                            eventMouseoutBool = true;
+                        });
+                        document.getElementById("calendar-opened").removeEventListener("mouseover", () => {
+                            eventMouseoutBool = false;
+                        });
+                        document.getElementById("calendar-opened").className = "";
+                        calendarIsOpenBool = false;
+                        document.querySelector("div.calendar-table").innerHTML = "";
+                    } else {
+                        document.getElementById("calendar-opened").addEventListener("mouseout", () => {
+                            eventMouseoutBool = true;
+                        });
+                        document.getElementById("calendar-opened").addEventListener("mouseover", () => {
+                            eventMouseoutBool = false;
+                        });
+                        setTimeout(() => {
+                            if (calendarIsOpenBool) document.addEventListener("click", eventClickToClose);
+                        }, 100);
+                        calendarIsOpenBool = true;
+                        document.getElementById("calendar-opened").className = "active";
+                        renderCalendar();
+                    }
+                }
+
+                function closePhotoUpload() {
+                    document.getElementById("photo-upload").classList.remove("active");
+                }
+
+                function photoUpload() {
+                    let pathToFile = document.getElementById("path-to-photo").value;
+                    if (pathToFile) {
+                        currentEmployee._pathToPhoto = pathToFile;
+                        let img = document.getElementById("main-photo");
+                        img.onerror = (e) => {
+                            alertError("Ошибка, файл не найден");
+                            currentEmployee._pathToPhoto = "";
+                            saveChanges();
+                        };
+                        img.src = pathToFile;
+                        closePhotoUpload();
+                        saveChanges();
+                    } else {
+                        if (document.getElementById("photo-upload").lastElementChild.nodeName === "P") {
+                            return;
+                        } else {
+                            let p = document.createElement("p");
+                            p.innerHTML = "Заполните поле";
+                            p.classList.add("red-alert");
+                            document.getElementById("photo-upload").appendChild(p);
+                        }
+                    }
+                }
+
+                function openEditMode() {
+                    lockUnlockButtons(true, true, true, true, true, false, false, false);
+                    dispayData(true);
+                    closePhotoUpload();
+                }
+
+                function closeEditMode() {
+                    lockUnlockButtons(false, false, false, false, false, true, true, true);
+                    dispayData(false);
+                }
+
+                function deleteEmployee() {
+                    if (confirm(`Вы действительно хотите удалить "${currentEmployee.name}"`)) {
+                        localStorage.removeItem(_id);
+                        document.getElementById("main-photo").src = "";
+                        lockUnlockButtons(false, true, true, true, true, true, true, true);
+                        closePhotoUpload();
+                        getList();
+                    }
+                }
+
+                function addField() {
+                    if (newFieldBool) {
                         return;
                     } else {
-                        let p = document.createElement("p");
-                        p.innerHTML = "Заполните поле";
-                        p.classList.add("red-alert");
-                        document.getElementById("photo-upload").appendChild(p);
+                        content.innerHTML += '<textarea class="key"></textarea> : <textarea class="value"></textarea>';
+                        newFieldBool = true;
                     }
                 }
-            }
 
-            function openEditMode() {
-                lockUnlockButtons(true, true, true, true, true, false, false, false);
-                dispayData(true);
-                closePhotoUpload();
-            }
+                function discardChanges() {
+                    if (newEmployeeBool) {
+                        content.innerHTML = "";
+                        document.getElementById("new-employee-li").remove();
+                        lockUnlockButtons(false, true, true, true, true, true, true, true);
+                        newEmployeeBool = false;
+                    }
+                    closeEditMode();
+                    newFieldBool = false;
+                }
 
-            function closeEditMode() {
-                lockUnlockButtons(false, false, false, false, false, true, true, true);
-                dispayData(false);
-            }
-
-            function deleteEmployee() {
-                if (confirm(`Вы действительно хотите удалить "${currentEmployee.name}"`)) {
-                    localStorage.removeItem(_id);
-                    document.getElementById("main-photo").src = "";
-                    lockUnlockButtons(false, true, true, true, true, true, true, true);
-                    closePhotoUpload();
+                function saveChanges() {
+                    if (newEmployeeBool) {
+                        if (newFieldBool) {
+                            if (content.getElementsByClassName("key")[0].value[0] == "_") {
+                                alertError('Ключ не должен начинаться с "_"');
+                                return;
+                            }
+                            currentEmployee[
+                                content.getElementsByClassName("key")[0].value
+                            ] = content.getElementsByClassName("value")[0].value;
+                            localStorage.setItem(localStorage.length, JSON.stringify(currentEmployee));
+                        } else {
+                            return;
+                        }
+                    } else {
+                        if (newFieldBool) {
+                            if (content.getElementsByClassName("key")[0].value[0] == "_") {
+                                alertError('Ключ не должен начинаться с "_"');
+                                return;
+                            }
+                            for (let i = 0; i < content.children.length - 2; i++) {
+                                currentEmployee[content.children[i].firstChild.innerHTML] =
+                                    content.children[i].lastChild.innerHTML;
+                            }
+                            currentEmployee[
+                                content.getElementsByClassName("key")[0].value
+                            ] = content.getElementsByClassName("value")[0].value;
+                        } else {
+                            for (const key of content.children) {
+                                currentEmployee[key.firstChild.innerHTML] = key.lastChild.innerHTML;
+                            }
+                        }
+                        for (const key in currentEmployee) {
+                            if (currentEmployee[key] == "") {
+                                delete currentEmployee[key];
+                            }
+                        }
+                        localStorage.setItem(_id, JSON.stringify(currentEmployee));
+                    }
+                    newEmployeeBool = false;
+                    newFieldBool = false;
+                    closeEditMode();
                     getList();
                 }
-            }
 
-            function addField() {
-                if (newFieldBool) {
-                    return;
-                } else {
-                    content.innerHTML += '<textarea class="key"></textarea> : <textarea class="value"></textarea>';
-                    newFieldBool = true;
-                }
-            }
-
-            function discardChanges() {
-                if (newEmployeeBool) {
-                    content.innerHTML = "";
-                    document.getElementById("new-employee-li").remove();
-                    lockUnlockButtons(false, true, true, true, true, true, true, true);
-                    newEmployeeBool = false;
-                }
-                closeEditMode();
-                newFieldBool = false;
-            }
-
-            function saveChanges() {
-                if (newEmployeeBool) {
-                    if (newFieldBool) {
-                        if (content.getElementsByClassName("key")[0].value[0] == "_") {
-                            alertError('Ключ не должен начинаться с "_"');
-                            return;
-                        }
-                        currentEmployee[
-                            content.getElementsByClassName("key")[0].value
-                        ] = content.getElementsByClassName("value")[0].value;
-                        localStorage.setItem(localStorage.length, JSON.stringify(currentEmployee));
-                    } else {
-                        return;
-                    }
-                } else {
-                    if (newFieldBool) {
-                        if (content.getElementsByClassName("key")[0].value[0] == "_") {
-                            alertError('Ключ не должен начинаться с "_"');
-                            return;
-                        }
-                        for (let i = 0; i < content.children.length - 2; i++) {
-                            currentEmployee[content.children[i].firstChild.innerHTML] =
-                                content.children[i].lastChild.innerHTML;
-                        }
-                        currentEmployee[
-                            content.getElementsByClassName("key")[0].value
-                        ] = content.getElementsByClassName("value")[0].value;
-                    } else {
-                        for (const key of content.children) {
-                            currentEmployee[key.firstChild.innerHTML] = key.lastChild.innerHTML;
-                        }
-                    }
-                    for (const key in currentEmployee) {
-                        if (currentEmployee[key] == "") {
-                            delete currentEmployee[key];
-                        }
-                    }
-                    localStorage.setItem(_id, JSON.stringify(currentEmployee));
-                }
-                newEmployeeBool = false;
-                newFieldBool = false;
-                closeEditMode();
-                getList();
-            }
-
-            function alertError(text) {
-                document.getElementById("error-window").innerHTML = `<p class="red-alert">${text}</p>`;
-                document.getElementById("error-window").classList.toggle("active");
-                setTimeout(() => {
+                function alertError(text) {
+                    document.getElementById("error-window").innerHTML = `<p class="red-alert">${text}</p>`;
                     document.getElementById("error-window").classList.toggle("active");
-                }, 2000);
-            }
-            function parseCalendar(employee) {
-                console.log("function parseCalendar");
-            }
+                    setTimeout(() => {
+                        document.getElementById("error-window").classList.toggle("active");
+                    }, 2000);
+                }
+
+                function parseCalendar(employee) {
+                    console.log("function parseCalendar");
+                }
+
+                function renderCalendar(monthInput) {
+                    const year = new Date().getFullYear();
+                    const month = new Date().getMonth();
+                    const today = new Date().getDate();
+                    const monthStart = month + (monthInput ?? 0);
+                    const cell = document.querySelector("div.calendar-table");
+                    const months = [
+                        "Январь",
+                        "Февраль",
+                        "Март",
+                        "Апрель",
+                        "Май",
+                        "Июнь",
+                        "Июль",
+                        "Август",
+                        "Сентябрь",
+                        "Октябрь",
+                        "Ноябрь",
+                        "Декабрь",
+                    ];
+
+                    let lastWeekDay = new Date(year, monthStart + 1, 0).getDay();
+                    let startWeekDay = new Date(year, monthStart, 0).getDay();
+                    let dateStart = new Date(year, monthStart, 1 - startWeekDay);
+                    let dateEnd = new Date(year, monthStart + 1, 8 - lastWeekDay);
+                    let dateNow = new Date(year, month, today);
+
+                    console.log(monthStart, monthInput);
+
+                    let weekElem = document.createElement("div");
+                    let p = document.createElement("p");
+                    p.innerHTML = months[monthStart % 12];
+                    let weekElemNo = 0;
+                    let monthToDisplay = monthStart;
+                    weekElem.className = "week";
+                    cell.appendChild(p);
+                    cell.appendChild(weekElem);
+
+                    for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
+                        monthToDisplay = dateStart.getMonth();
+                        let day = document.createElement("div");
+                        day.className = "day month" + monthToDisplay;
+                        day.innerHTML = dateStart.getDate();
+                        if (+dateStart == +dateNow) {
+                            day.style.border = "5px solid lightblue";
+                            day.style.margin = "0";
+                        }
+                        weekElem.appendChild(day);
+                        if (dateStart.getDay() == 0) {
+                            weekElem = document.createElement("div");
+                            weekElem.className = "week";
+                            cell.appendChild(weekElem);
+                        }
+                    }
+                }
+
+                function eventClickToClose() {
+                    if (eventMouseoutBool && calendarIsOpenBool) {
+                        displayCalendar();
+                    }
+                }
+            })();
         </script>
     </body>
 </html>

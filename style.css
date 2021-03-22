@@ -36,6 +36,21 @@ body {
 p {
     margin: 0;
 }
+.no-script {
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+    background-color: #fff;
+    position: relative;
+}
+.no-script p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    color: red;
+}
 
 /* scroll-bar */
 
@@ -135,8 +150,7 @@ p {
     color: #fff;
     background-color: #7d8c93;
     border: none;
-    transition-delay: 1s;
-    transition: linear 1s;
+    transition: linear 0.2s;
 }
 #add-employee:hover {
     background-color: #68757a;
@@ -172,7 +186,7 @@ p {
     width: 80px;
     height: 80px;
     float: left;
-    border-radius: 40px;
+    border-radius: 50%;
     margin: 20px 5px 20px 5px;
 }
 .right {
@@ -274,14 +288,16 @@ p {
     margin: 20px;
     top: 0;
     background-color: #aaa;
-    width: 300px;
-    height: 200px;
+    width: 350px;
+    height: 350px;
     transition: opacity linear 0.3s;
     opacity: 0;
+    z-index: -1;
 }
 #calendar-opened.active {
     -webkit-animation-name: fade;
     animation-name: fade;
+    z-index: 1;
     opacity: 1;
 }
 .calendar-display-main {
@@ -291,16 +307,66 @@ p {
     background-color: green;
     margin: 5px;
 }
+.week {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.day {
+    background-color: #8bc34a;
+    margin: 5px;
+    height: 30px;
+    width: 30px;
+    border-radius: 100%;
+    text-align: center;
+    line-height: 30px;
+}
+.month0 {
+    background-color: #bae2ff;
+}
+.month1 {
+    background-color: #feffeb;
+}
+.month2 {
+    background-color: #fcffbc;
+}
+.month3 {
+    background-color: #f6ff95;
+}
+.month4 {
+    background-color: #eefa77;
+}
+.month5 {
+    background-color: #e4f25e;
+}
+.month6 {
+    background-color: #ffdb56;
+}
+.month7 {
+    background-color: #ffd434;
+}
+.month8 {
+    background-color: #ffe37a;
+}
+.month9 {
+    background-color: #ffeba3;
+}
+.month10 {
+    background-color: #fff5cf;
+}
+.month11 {
+    background-color: #90d1ff;
+}
 #settings {
     font-size: 12px;
 }
-#content {
+/* #content {
     overflow-y: auto;
     overflow-x: hidden;
     width: 90%;
     height: 100%;
     margin: auto;
-}
+} */
 #result {
     margin: 0;
 }
