@@ -39,24 +39,18 @@
                     </div>
                     <div id="error-window"></div>
                     <img src="" alt="" id="main-photo" />
-                    <p class="name"></p>
+                    <div class="name-field">
+                        <span class="surname"></span>
+                        <span class="name"></span>
+                        <span class="patronymic"></span>
+                    </div>
                     <div class="calendar-field">
-                        <button id="open-calendar-btn">Изменить график работы</button>
                         <div id="calendar-opened" class="">
-                            <div class="week">
-                                <div class="day">Пн</div>
-                                <div class="day">Вт</div>
-                                <div class="day">Ср</div>
-                                <div class="day">Чт</div>
-                                <div class="day">Пт</div>
-                                <div class="day">Сб</div>
-                                <div class="day">Вс</div>
-                            </div>
-                            <hr />
                             <div class="calendar-table"></div>
                             <div class="calendar-settings">
                                 <button id="calendar-left">Влево</button>
                                 <button id="calendar-set-5na2">Установить 5/2</button>
+                                <br />
                                 <button id="calendar-clear">Очистить полностью</button>
                                 <button id="calendar-save">Сохранить</button>
                                 <button id="calendar-right">Вправо</button>
@@ -67,416 +61,593 @@
                         <div class="calendar-display-main"></div>
                     </div>
                     <div id="settings">
-                        <button id="change-photo-btn">Загрузить фото профиля</button>
-                        <button id="edit-mode-btn">Изменить данные</button>
-                        <button id="delete-emloyee-btn">Удалить пользователя</button>
-                        <button id="add-field-btn">Добавить поле</button>
-                        <button id="discard">Отменить изменения</button>
-                        <button id="save">Сохранить в бд</button>
+                        <button id="change-photo-btn" class="btn">
+                            <svg
+                                width="50"
+                                height="50"
+                                viewBox="0 0 50 50"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M46.875 0H3.125C2.2962 0 1.50134 0.376274 0.915291 1.04605C0.32924 1.71582 0 2.62423 0 3.57143V46.4286C0 47.3758 0.32924 48.2842 0.915291 48.954C1.50134 49.6237 2.2962 50 3.125 50H46.875C47.7038 50 48.4987 49.6237 49.0847 48.954C49.6708 48.2842 50 47.3758 50 46.4286V3.57143C50 2.62423 49.6708 1.71582 49.0847 1.04605C48.4987 0.376274 47.7038 0 46.875 0ZM10.8125 7.14286C11.7396 7.14286 12.6459 7.45705 13.4167 8.0457C14.1876 8.63435 14.7884 9.47102 15.1432 10.4499C15.498 11.4288 15.5908 12.5059 15.4099 13.5451C15.2291 14.5843 14.7826 15.5389 14.1271 16.2881C13.4715 17.0373 12.6363 17.5475 11.727 17.7542C10.8177 17.9609 9.8752 17.8548 9.01867 17.4494C8.16214 17.0439 7.43006 16.3572 6.91499 15.4763C6.39992 14.5953 6.125 13.5595 6.125 12.5C6.125 11.0792 6.61886 9.71659 7.49794 8.71193C8.37701 7.70727 9.5693 7.14286 10.8125 7.14286ZM6.25 41.0714V33.75L15.625 22.8929C15.9178 22.5603 16.3138 22.3736 16.7266 22.3736C17.1394 22.3736 17.5354 22.5603 17.8281 22.8929L21.875 27.4107L9.875 41.0714H6.25ZM43.75 41.0714H14.2969L24.0312 29.9464L32.4688 20.3036C32.7615 19.971 33.1575 19.7843 33.5703 19.7843C33.9831 19.7843 34.3791 19.971 34.6719 20.3036L43.75 30.6786V41.0714Z"
+                                    fill="white"
+                                />
+                            </svg>
+                        </button>
+                        <button id="edit-mode-btn" class="btn">
+                            <svg
+                                width="50"
+                                height="50"
+                                viewBox="0 0 50 50"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M3 0C1.34315 0 0 1.34315 0 3V47C0 48.6569 1.34315 50 3 50H47C48.6569 50 50 48.6569 50 47V3C50 1.34315 48.6569 0 47 0H3ZM24.0083 42.4958L24.75 39.5313C25.0872 38.1814 25.785 36.9485 26.7688 35.9646L39.0646 23.6688C39.7702 22.9619 40.6222 22.4183 41.5605 22.0764C42.4989 21.7344 43.5009 21.6024 44.4958 21.6896V16.4583H7V35.725C7 37.5207 7.71335 39.2429 8.98313 40.5127C10.2529 41.7825 11.9751 42.4958 13.7708 42.4958H24.0083ZM42.5127 6.98313C43.7825 8.25291 44.4958 9.9751 44.4958 11.7708V13.3333H7V11.7708C7 9.9751 7.71335 8.25291 8.98313 6.98313C10.2529 5.71335 11.9751 5 13.7708 5H37.725C39.5207 5 41.2429 5.71335 42.5127 6.98313ZM28.2438 37.4375L40.5375 25.1438L40.5354 25.1417C41.433 24.2713 42.6368 23.7889 43.887 23.7984C45.1372 23.808 46.3336 24.3088 47.2178 25.1927C48.102 26.0766 48.6031 27.2728 48.613 28.523C48.623 29.7732 48.1409 30.9771 47.2708 31.875L34.9771 44.1729C34.2598 44.8898 33.3611 45.3982 32.3771 45.6438L28.5646 46.5979C26.9062 47.0125 25.4021 45.5104 25.8188 43.85L26.7708 40.0375C27.0169 39.0533 27.5261 38.1546 28.2438 37.4375Z"
+                                    fill="white"
+                                />
+                            </svg>
+                        </button>
+                        <button id="delete-emloyee-btn" class="btn">
+                            <svg
+                                width="50"
+                                height="50"
+                                viewBox="0 0 50 50"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M12.5 15C12.5 12.3478 13.5536 9.8043 15.4289 7.92893C17.3043 6.05357 19.8478 5 22.5 5C25.1522 5 27.6957 6.05357 29.5711 7.92893C31.4464 9.8043 32.5 12.3478 32.5 15C32.5 17.6522 31.4464 20.1957 29.5711 22.0711C27.6957 23.9464 25.1522 25 22.5 25C19.8478 25 17.3043 23.9464 15.4289 22.0711C13.5536 20.1957 12.5 17.6522 12.5 15Z"
+                                    fill="#B6D1DA"
+                                />
+                                <path
+                                    d="M5 32.5C5 29.7175 7.2575 27.5 10.0225 27.5H25.6425C23.6065 29.9609 22.4949 33.0561 22.5 36.25C22.5 39.5075 23.6325 42.5 25.525 44.8575C24.5375 44.9525 23.525 45 22.5 45C17.8625 45 13.5425 44.035 10.3375 41.9925C7.0825 39.9175 5 36.725 5 32.5Z"
+                                    fill="#B6D1DA"
+                                />
+                                <path
+                                    d="M47.5 36.25C47.5 39.2337 46.3147 42.0952 44.205 44.205C42.0952 46.3147 39.2337 47.5 36.25 47.5C33.2663 47.5 30.4048 46.3147 28.295 44.205C26.1853 42.0952 25 39.2337 25 36.25C25 33.2663 26.1853 30.4048 28.295 28.295C30.4048 26.1853 33.2663 25 36.25 25C39.2337 25 42.0952 26.1853 44.205 28.295C46.3147 30.4048 47.5 33.2663 47.5 36.25ZM40.885 33.385C41.1197 33.1503 41.2516 32.8319 41.2516 32.5C41.2516 32.1681 41.1197 31.8497 40.885 31.615C40.6503 31.3803 40.3319 31.2484 40 31.2484C39.6681 31.2484 39.3497 31.3803 39.115 31.615L36.25 34.4825L33.385 31.615C33.1503 31.3803 32.8319 31.2484 32.5 31.2484C32.1681 31.2484 31.8497 31.3803 31.615 31.615C31.3803 31.8497 31.2484 32.1681 31.2484 32.5C31.2484 32.8319 31.3803 33.1503 31.615 33.385L34.4825 36.25L31.615 39.115C31.4988 39.2312 31.4066 39.3692 31.3437 39.521C31.2808 39.6729 31.2484 39.8356 31.2484 40C31.2484 40.1644 31.2808 40.3271 31.3437 40.479C31.4066 40.6308 31.4988 40.7688 31.615 40.885C31.7312 41.0012 31.8692 41.0934 32.021 41.1563C32.1729 41.2192 32.3356 41.2516 32.5 41.2516C32.6644 41.2516 32.8271 41.2192 32.979 41.1563C33.1308 41.0934 33.2688 41.0012 33.385 40.885L36.25 38.0175L39.115 40.885C39.2312 41.0012 39.3692 41.0934 39.521 41.1563C39.6729 41.2192 39.8356 41.2516 40 41.2516C40.1644 41.2516 40.3271 41.2192 40.479 41.1563C40.6308 41.0934 40.7688 41.0012 40.885 40.885C41.0012 40.7688 41.0934 40.6308 41.1563 40.479C41.2192 40.3271 41.2516 40.1644 41.2516 40C41.2516 39.8356 41.2192 39.6729 41.1563 39.521C41.0934 39.3692 41.0012 39.2312 40.885 39.115L38.0175 36.25L40.885 33.385Z"
+                                    fill="#B6D1DA"
+                                />
+                                <rect width="50" height="50" rx="3" fill="white" />
+                                <path
+                                    d="M12.5 14C12.5 11.3478 13.5536 8.8043 15.4289 6.92893C17.3043 5.05357 19.8478 4 22.5 4C25.1522 4 27.6957 5.05357 29.5711 6.92893C31.4464 8.8043 32.5 11.3478 32.5 14C32.5 16.6522 31.4464 19.1957 29.5711 21.0711C27.6957 22.9464 25.1522 24 22.5 24C19.8478 24 17.3043 22.9464 15.4289 21.0711C13.5536 19.1957 12.5 16.6522 12.5 14Z"
+                                    fill="#B6D1DA"
+                                />
+                                <path
+                                    d="M5 31.5C5 28.7175 7.2575 26.5 10.0225 26.5H25.6425C23.6065 28.9609 22.4949 32.0561 22.5 35.25C22.5 38.5075 23.6325 41.5 25.525 43.8575C24.5375 43.9525 23.525 44 22.5 44C17.8625 44 13.5425 43.035 10.3375 40.9925C7.0825 38.9175 5 35.725 5 31.5Z"
+                                    fill="#B6D1DA"
+                                />
+                                <path
+                                    d="M47.5 35.25C47.5 38.2337 46.3147 41.0952 44.205 43.205C42.0952 45.3147 39.2337 46.5 36.25 46.5C33.2663 46.5 30.4048 45.3147 28.295 43.205C26.1853 41.0952 25 38.2337 25 35.25C25 32.2663 26.1853 29.4048 28.295 27.295C30.4048 25.1853 33.2663 24 36.25 24C39.2337 24 42.0952 25.1853 44.205 27.295C46.3147 29.4048 47.5 32.2663 47.5 35.25ZM40.885 32.385C41.1197 32.1503 41.2516 31.8319 41.2516 31.5C41.2516 31.1681 41.1197 30.8497 40.885 30.615C40.6503 30.3803 40.3319 30.2484 40 30.2484C39.6681 30.2484 39.3497 30.3803 39.115 30.615L36.25 33.4825L33.385 30.615C33.1503 30.3803 32.8319 30.2484 32.5 30.2484C32.1681 30.2484 31.8497 30.3803 31.615 30.615C31.3803 30.8497 31.2484 31.1681 31.2484 31.5C31.2484 31.8319 31.3803 32.1503 31.615 32.385L34.4825 35.25L31.615 38.115C31.4988 38.2312 31.4066 38.3692 31.3437 38.521C31.2808 38.6729 31.2484 38.8356 31.2484 39C31.2484 39.1644 31.2808 39.3271 31.3437 39.479C31.4066 39.6308 31.4988 39.7688 31.615 39.885C31.7312 40.0012 31.8692 40.0934 32.021 40.1563C32.1729 40.2192 32.3356 40.2516 32.5 40.2516C32.6644 40.2516 32.8271 40.2192 32.979 40.1563C33.1308 40.0934 33.2688 40.0012 33.385 39.885L36.25 37.0175L39.115 39.885C39.2312 40.0012 39.3692 40.0934 39.521 40.1563C39.6729 40.2192 39.8356 40.2516 40 40.2516C40.1644 40.2516 40.3271 40.2192 40.479 40.1563C40.6308 40.0934 40.7688 40.0012 40.885 39.885C41.0012 39.7688 41.0934 39.6308 41.1563 39.479C41.2192 39.3271 41.2516 39.1644 41.2516 39C41.2516 38.8356 41.2192 38.6729 41.1563 38.521C41.0934 38.3692 41.0012 38.2312 40.885 38.115L38.0175 35.25L40.885 32.385Z"
+                                    fill="#B6D1DA"
+                                />
+                            </svg>
+                        </button>
+                        <button id="open-calendar-btn" class="btn">
+                            <svg
+                                width="50"
+                                height="50"
+                                viewBox="0 0 50 50"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M0 3C0 1.34314 1.34314 0 3 0H47C48.6569 0 50 1.34314 50 3V47C50 48.6569 48.6569 50 47 50H3C1.34314 50 0 48.6569 0 47V3ZM20.365 22.865C20.4811 22.7486 20.6191 22.6562 20.7709 22.5932C20.9228 22.5302 21.0856 22.4978 21.25 22.4978C21.3036 22.4978 21.357 22.5012 21.4099 22.5081C21.4705 22.5159 21.5304 22.5281 21.5892 22.5447C21.6366 22.558 21.6833 22.5742 21.7291 22.5932C21.881 22.6562 22.0189 22.7486 22.135 22.865L25 25.7325L27.865 22.865C28.0997 22.6303 28.418 22.4984 28.75 22.4984C29.0819 22.4984 29.4003 22.6303 29.635 22.865C29.8697 23.0997 30.0016 23.4181 30.0016 23.75C30.0016 24.0819 29.8697 24.4003 29.635 24.635L26.7675 27.5L29.635 30.365C29.8697 30.5997 30.0016 30.9181 30.0016 31.25C30.0016 31.5819 29.8697 31.9003 29.635 32.135C29.4003 32.3697 29.0819 32.5016 28.75 32.5016C28.418 32.5016 28.0997 32.3697 27.865 32.135L25 29.2675L22.135 32.135C21.9003 32.3697 21.582 32.5016 21.25 32.5016C20.9181 32.5016 20.5997 32.3697 20.365 32.135C20.1303 31.9003 19.9984 31.5819 19.9984 31.25C19.9984 30.9181 20.1303 30.5997 20.365 30.365L23.2325 27.5L20.365 24.635C20.2486 24.5189 20.1562 24.381 20.0932 24.2291C20.0302 24.0772 19.9978 23.9144 19.9978 23.75C19.9978 23.5856 20.0302 23.4228 20.0932 23.2709C20.1562 23.119 20.2486 22.9811 20.365 22.865ZM14.6339 5.36612C14.3995 5.13168 14.0815 5 13.75 5C13.4185 5 13.1005 5.13168 12.8661 5.36612C12.6317 5.60052 12.5 5.91849 12.5 6.25V7.5H10C8.67389 7.5 7.40216 8.02679 6.46448 8.96448C5.52679 9.90216 5 11.1739 5 12.5V40C5 41.3261 5.52679 42.5978 6.46448 43.5355C7.40216 44.4732 8.67389 45 10 45H40C41.3261 45 42.5978 44.4732 43.5355 43.5355C44.4732 42.5978 45 41.3261 45 40V12.5C45 11.1739 44.4732 9.90216 43.5355 8.96448C42.5978 8.02679 41.3261 7.5 40 7.5H37.5V6.25C37.5 5.91849 37.3683 5.60052 37.1339 5.36612C36.8995 5.13168 36.5815 5 36.25 5C35.9185 5 35.6005 5.13168 35.3661 5.36612C35.1317 5.60052 35 5.91849 35 6.25V7.5H15V6.25C15 5.91849 14.8683 5.60052 14.6339 5.36612ZM7.5 40V15H42.5V40C42.5 40.6631 42.2366 41.2989 41.7678 41.7678C41.299 42.2366 40.663 42.5 40 42.5H10C9.33698 42.5 8.70105 42.2366 8.23224 41.7678C7.76337 41.2989 7.5 40.6631 7.5 40Z"
+                                    fill="white"
+                                />
+                            </svg>
+                        </button>
                     </div>
+                    <div class="id"><span>Информация</span><span id="id"></span></div>
                 </div>
                 <div id="content"></div>
+                <div class="bottom-btns">
+                    <button id="discard">Отменить</button>
+                    <button id="save">Сохранить</button>
+                </div>
             </div>
         </div>
         <script>
-            (() => {
-                "use strict";
-                let editModeBool = false;
-                let newFieldBool = false;
-                let newEmployeeBool = false;
-                let eventMouseoutBool = false;
-                let calendarIsOpenBool = false;
-                let monthInput = 0;
-                let workingDays = [];
-                let content = document.getElementById("content");
+            "use strict";
+            let editModeBool = false;
+            let newFieldBool = false;
+            let newEmployeeBool = false;
+            let eventMouseoutBool = false;
+            let calendarIsOpenBool = false;
+            let fromCalendarBool = false;
+            let monthInput = 0;
+            let content = document.getElementById("content");
 
-                let _id;
-                let currentEmployee = {};
+            const svgBtnAddFieldBlock = `
+                    <svg id="add-field-btn" width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="31" cy="31" r="31" fill="#E7EFF1" />
+                        <path
+                            d="M48.496 36.392H36.328V48.272H25.24V36.392H13V25.88H25.24V14H36.328V25.88H48.496V36.392Z"
+                            fill="#98AFB6"
+                        />
+                    </svg>`;
+            let divSvgBtnAddFieldBlock = document.createElement("div");
+            divSvgBtnAddFieldBlock.innerHTML = svgBtnAddFieldBlock;
+            divSvgBtnAddFieldBlock.className = "block-add-employee svg-add-hover";
 
-                lockUnlockButtons(false, true, true, true, true, true, true, true);
-                document.onload = getList();
-                document.getElementById("add-employee").onclick = createEmployee;
-                document.getElementById("open-calendar-btn").onclick = displayCalendar;
-                document.getElementById("input-upload-photo-submit").onclick = photoUpload;
-                document.getElementById("edit-mode-btn").onclick = openEditMode;
-                document.getElementById("delete-emloyee-btn").onclick = deleteEmployee;
-                document.getElementById("add-field-btn").onclick = addField;
-                document.getElementById("discard").onclick = discardChanges;
-                document.getElementById("save").onclick = saveChanges;
-                document.getElementById("calendar-set-5na2").onclick = calendarSet5na2;
-                document.getElementById("calendar-clear").onclick = clearCalendar;
-                document.getElementById("calendar-save").onclick = saveCalendar;
-                document.getElementById("calendar-left").onclick = () => {
-                    monthInput--;
-                    document.querySelector("div.calendar-table").innerHTML = "";
-                    renderCalendar(monthInput);
-                };
-                document.getElementById("calendar-right").onclick = () => {
-                    monthInput++;
-                    document.querySelector("div.calendar-table").innerHTML = "";
-                    renderCalendar(monthInput);
-                };
-                document.getElementById("hide").onclick = () => {
-                    document.getElementById("left").classList.toggle("hidden");
-                };
-                document.getElementById("change-photo-btn").onclick = () => {
-                    document.getElementById("photo-upload").classList.toggle("active");
-                };
+            let _id;
+            let workingDays = [];
+            let currentEmployee = {};
 
-                function lockUnlockButtons(add, calendar, photo, editMode, deleteBtn, addFied, discard, save) {
-                    document.getElementById("add-employee").disabled = add;
-                    document.getElementById("open-calendar-btn").disabled = calendar;
-                    document.getElementById("change-photo-btn").disabled = photo;
-                    document.getElementById("edit-mode-btn").disabled = editMode;
-                    document.getElementById("delete-emloyee-btn").disabled = deleteBtn;
-                    document.getElementById("add-field-btn").disabled = addFied;
-                    document.getElementById("discard").disabled = discard;
-                    document.getElementById("save").disabled = save;
+            lockUnlockButtons(false, true, true, true, true, true, true);
+            document.onload = getList();
+            document.getElementById("add-employee").onclick = createEmployee;
+            document.getElementById("open-calendar-btn").onclick = displayCalendar;
+            document.getElementById("input-upload-photo-submit").onclick = photoUpload;
+            document.getElementById("edit-mode-btn").onclick = openEditMode;
+            document.getElementById("delete-emloyee-btn").onclick = deleteEmployee;
+            document.getElementById("discard").onclick = discardChanges;
+            document.getElementById("save").onclick = saveChanges;
+            document.getElementById("calendar-set-5na2").onclick = calendarSet5na2;
+            document.getElementById("calendar-clear").onclick = clearCalendar;
+            document.getElementById("calendar-save").onclick = saveCalendar;
+            document.getElementById("calendar-left").onclick = () => {
+                monthInput--;
+                document.querySelector("div.calendar-table").innerHTML = "";
+                renderCalendar(monthInput);
+            };
+            document.getElementById("calendar-right").onclick = () => {
+                monthInput++;
+                document.querySelector("div.calendar-table").innerHTML = "";
+                renderCalendar(monthInput);
+            };
+            document.getElementById("hide").onclick = () => {
+                document.getElementById("left").classList.toggle("hidden");
+                document.querySelectorAll(".block").forEach((e) => e.classList.toggle("opened"));
+                document.querySelectorAll(".block-add-employee").forEach((e) => e.classList.toggle("opened"));
+            };
+            document.getElementById("change-photo-btn").onclick = () => {
+                document.getElementById("photo-upload").classList.toggle("active");
+            };
+
+            function lockUnlockButtons(add, calendar, photo, editMode, deleteBtn, discardSave, addFied) {
+                document.getElementById("add-employee").disabled = add;
+                document.getElementById("open-calendar-btn").disabled = calendar;
+                document.getElementById("change-photo-btn").disabled = photo;
+                document.getElementById("edit-mode-btn").disabled = editMode;
+                document.getElementById("delete-emloyee-btn").disabled = deleteBtn;
+                if (discardSave) {
+                    document.querySelector("div.bottom-btns").classList.remove("active");
+                } else {
+                    document.querySelector("div.bottom-btns").classList.add("active");
                 }
+                if (addFied) {
+                    if (content.querySelector("div.block-add-employee"))
+                        content.querySelector("div.block-add-employee").remove();
+                } else {
+                    content.appendChild(divSvgBtnAddFieldBlock);
+                    divSvgBtnAddFieldBlock.onclick = addField;
+                }
+            }
 
-                function getList() {
-                    document.getElementById("list").innerHTML = "";
-                    for (let i = 0; i < localStorage.length; i++) {
-                        let a = JSON.parse(localStorage.getItem(i));
+            function getList() {
+                document.getElementById("list").innerHTML = "";
+                for (let i = 0; i <= localStorage.length; i++) {
+                    let a = JSON.parse(localStorage.getItem(i));
+                    if (a === null) {
+                    } else {
                         createListItem(a, i);
                     }
                 }
+            }
 
-                function createListItem(employee, key) {
-                    let list = document.getElementById("list");
-                    let div = document.createElement("div");
-                    let img = document.createElement("img");
-                    let p = document.createElement("p");
-                    if (typeof employee._pathToPhoto !== "undefined") {
-                        img.src = employee._pathToPhoto;
-                    }
-                    div.className = "list-item";
-                    p.innerHTML = employee.name;
-                    div.appendChild(img);
-                    div.appendChild(p);
-                    div.onclick = () => getEmloyeeDataFromStorage(key);
-                    list.appendChild(div);
+            function createListItem(employee, key) {
+                let list = document.getElementById("list");
+                let div = document.createElement("div");
+                let img = document.createElement("img");
+                let p = document.createElement("p");
+                if (employee._pathToPhoto) {
+                    img.src = employee._pathToPhoto;
                 }
+                div.className = "list-item";
+                p.innerHTML = employee.name;
+                div.appendChild(img);
+                div.appendChild(p);
+                div.onclick = () => getEmloyeeDataFromStorage(key);
+                list.appendChild(div);
+            }
 
-                function getEmloyeeDataFromStorage(key) {
-                    currentEmployee = JSON.parse(localStorage.getItem(key));
-                    _id = key;
-                    lockUnlockButtons(false, false, false, false, false, true, true, true);
-                    dispayData(false);
-                    if (currentEmployee._pathToPhoto) {
-                        document.getElementById("main-photo").src = currentEmployee._pathToPhoto;
-                    } else {
-                        document.getElementById("main-photo").src = "";
-                    }
-                    workingDays = currentEmployee._calendar ?? [];
-                    closePhotoUpload();
-                }
+            function getEmloyeeDataFromStorage(key) {
+                currentEmployee = JSON.parse(localStorage.getItem(key));
+                _id = key;
+                currentEmployee._id = key;
 
-                function createEmployee() {
-                    currentEmployee = {};
-                    content.innerHTML = "";
+                document.querySelector("span.surname").innerHTML = "";
+                document.querySelector("span.name").innerHTML = "";
+                document.querySelector("span.patronymic").innerHTML = "";
+                dispayData(false);
+                lockUnlockButtons(false, false, false, false, false, true, true);
+                if (currentEmployee._pathToPhoto) {
+                    document.getElementById("main-photo").src = currentEmployee._pathToPhoto;
+                } else {
                     document.getElementById("main-photo").src = "";
-                    lockUnlockButtons(true, true, true, true, true, false, false, false);
-                    newEmployeeBool = true;
-                    let div = document.createElement("div");
-                    let p = document.createElement("p");
-                    p.innerHTML = "Новый сотрудник";
-                    div.className = "list-item";
-                    div.id = "new-employee-li";
-                    div.appendChild(p);
-                    document.getElementById("list").appendChild(div);
-                    closePhotoUpload();
                 }
+                workingDays = currentEmployee._calendar ?? [];
+                closePhotoUpload();
+            }
 
-                function dispayData(contenteditable) {
-                    content.innerHTML = "";
-                    for (const key in currentEmployee) {
-                        if (key[0] == "_") {
-                        } else {
-                            let div = document.createElement("div");
-                            if (contenteditable) {
-                                div.innerHTML = `<span>${key}</span> : <span contenteditable>${currentEmployee[key]}</span>`;
-                            } else {
-                                div.innerHTML = `<span>${key}</span> : <span>${currentEmployee[key]}</span>`;
-                            }
-                            content.appendChild(div);
-                        }
+            function createEmployee() {
+                currentEmployee = {};
+                content.innerHTML = "";
+                document.querySelector("span.surname").innerHTML = "";
+                document.querySelector("span.name").innerHTML = "";
+                document.querySelector("span.patronymic").innerHTML = "";
+
+                content.appendChild(divSvgBtnAddFieldBlock);
+                document.getElementById("main-photo").src = "";
+                lockUnlockButtons(true, true, true, true, true, false, false);
+                newEmployeeBool = true;
+                let div = document.createElement("div");
+                let p = document.createElement("p");
+                p.innerHTML = "Новый сотрудник";
+                div.className = "list-item";
+                div.id = "new-employee-li";
+                div.appendChild(p);
+                document.getElementById("list").appendChild(div);
+                closePhotoUpload();
+            }
+
+            function dispayData(contenteditable) {
+                content.innerHTML = "";
+                for (const key in currentEmployee) {
+                    if (key == "_id") {
+                        document.querySelector("#id").innerHTML = currentEmployee[key];
                     }
-                }
-
-                function displayCalendar() {
-                    if (calendarIsOpenBool) {
-                        document.removeEventListener("click", eventClickToClose);
-                        document.getElementById("calendar-opened").removeEventListener("mouseout", () => {
-                            eventMouseoutBool = true;
-                        });
-                        document.getElementById("calendar-opened").removeEventListener("mouseover", () => {
-                            eventMouseoutBool = false;
-                        });
-                        document.getElementById("calendar-opened").className = "";
-                        calendarIsOpenBool = false;
-                        document.querySelector("div.calendar-table").innerHTML = "";
+                    if (key[0] == "_") {
                     } else {
-                        document.getElementById("calendar-opened").addEventListener("mouseout", () => {
-                            eventMouseoutBool = true;
-                        });
-                        document.getElementById("calendar-opened").addEventListener("mouseover", () => {
-                            eventMouseoutBool = false;
-                        });
-                        setTimeout(() => {
-                            if (calendarIsOpenBool) document.addEventListener("click", eventClickToClose);
-                        }, 100);
-                        calendarIsOpenBool = true;
-                        document.getElementById("calendar-opened").className = "active";
-                        renderCalendar(monthInput);
+                        let div = document.createElement("div");
+                        if (key == "Фамилия") {
+                            document.querySelector("span.surname").innerHTML = currentEmployee[key];
+                        } else if (key == "Имя") {
+                            document.querySelector("span.name").innerHTML = currentEmployee[key];
+                        } else if (key == "Отчество") {
+                            document.querySelector("span.patronymic").innerHTML = currentEmployee[key];
+                        }
+                        if (contenteditable) {
+                            div.innerHTML = `<p class="key">${key}</p><p class="value" contenteditable>${currentEmployee[key]}</p>`;
+                        } else {
+                            div.innerHTML = `<p class="key">${key}</p><p class="value">${currentEmployee[key]}</p>`;
+                        }
+                        div.className = "block";
+                        content.appendChild(div);
                     }
                 }
+            }
 
-                function closePhotoUpload() {
-                    document.getElementById("photo-upload").classList.remove("active");
+            function displayCalendar() {
+                if (calendarIsOpenBool) {
+                    document.removeEventListener("click", eventClickToClose);
+                    document.getElementById("calendar-opened").removeEventListener("mouseout", () => {
+                        eventMouseoutBool = true;
+                    });
+                    document.getElementById("calendar-opened").removeEventListener("mouseover", () => {
+                        eventMouseoutBool = false;
+                    });
+                    document.getElementById("calendar-opened").className = "";
+                    calendarIsOpenBool = false;
+                    document.querySelector("div.calendar-table").innerHTML = "";
+                } else {
+                    document.getElementById("calendar-opened").addEventListener("mouseout", () => {
+                        eventMouseoutBool = true;
+                    });
+                    document.getElementById("calendar-opened").addEventListener("mouseover", () => {
+                        eventMouseoutBool = false;
+                    });
+                    setTimeout(() => {
+                        if (calendarIsOpenBool) document.addEventListener("click", eventClickToClose);
+                    }, 100);
+                    calendarIsOpenBool = true;
+                    document.getElementById("calendar-opened").className = "active";
+                    renderCalendar(monthInput);
                 }
+            }
 
-                function photoUpload() {
-                    let pathToFile = document.getElementById("path-to-photo").value;
-                    if (pathToFile) {
-                        currentEmployee._pathToPhoto = pathToFile;
-                        let img = document.getElementById("main-photo");
-                        img.onerror = (e) => {
-                            alertError("Ошибка, файл не найден");
-                            currentEmployee._pathToPhoto = "";
-                            saveChanges();
-                        };
-                        img.src = pathToFile;
-                        closePhotoUpload();
+            function closePhotoUpload() {
+                document.getElementById("photo-upload").classList.remove("active");
+            }
+
+            function photoUpload() {
+                let pathToFile = document.getElementById("path-to-photo").value;
+                if (pathToFile) {
+                    currentEmployee._pathToPhoto = pathToFile;
+                    let img = document.getElementById("main-photo");
+                    img.onerror = (e) => {
+                        alertError("Ошибка, файл не найден");
+                        currentEmployee._pathToPhoto = "";
                         saveChanges();
-                    } else {
-                        if (document.getElementById("photo-upload").lastElementChild.nodeName === "P") {
-                            return;
-                        } else {
-                            let p = document.createElement("p");
-                            p.innerHTML = "Заполните поле";
-                            p.classList.add("red-alert");
-                            document.getElementById("photo-upload").appendChild(p);
-                        }
-                    }
-                }
-
-                function openEditMode() {
-                    lockUnlockButtons(true, true, true, true, true, false, false, false);
-                    dispayData(true);
+                    };
+                    img.src = pathToFile;
                     closePhotoUpload();
-                }
-
-                function closeEditMode() {
-                    lockUnlockButtons(false, false, false, false, false, true, true, true);
-                    dispayData(false);
-                }
-
-                function deleteEmployee() {
-                    if (confirm(`Вы действительно хотите удалить "${currentEmployee.name}"`)) {
-                        localStorage.removeItem(_id);
-                        document.getElementById("main-photo").src = "";
-                        lockUnlockButtons(false, true, true, true, true, true, true, true);
-                        closePhotoUpload();
-                        getList();
-                    }
-                }
-
-                function addField() {
-                    if (newFieldBool) {
+                    saveChanges();
+                } else {
+                    if (document.getElementById("photo-upload").lastElementChild.nodeName === "P") {
                         return;
                     } else {
-                        content.innerHTML += '<textarea class="key"></textarea> : <textarea class="value"></textarea>';
-                        newFieldBool = true;
+                        let p = document.createElement("p");
+                        p.innerHTML = "Заполните поле";
+                        p.classList.add("red-alert");
+                        document.getElementById("photo-upload").appendChild(p);
                     }
                 }
+            }
 
-                function discardChanges() {
-                    if (newEmployeeBool) {
-                        content.innerHTML = "";
-                        document.getElementById("new-employee-li").remove();
-                        lockUnlockButtons(false, true, true, true, true, true, true, true);
-                        newEmployeeBool = false;
-                    }
-                    closeEditMode();
-                    newFieldBool = false;
-                }
+            function openEditMode() {
+                console.log("openEditMode");
+                dispayData(true);
+                lockUnlockButtons(true, true, true, true, true, false, false);
+                closePhotoUpload();
+            }
 
-                function saveChanges() {
-                    if (newEmployeeBool) {
-                        if (newFieldBool) {
-                            if (content.getElementsByClassName("key")[0].value[0] == "_") {
-                                alertError('Ключ не должен начинаться с "_"');
-                                return;
-                            }
-                            currentEmployee[
-                                content.getElementsByClassName("key")[0].value
-                            ] = content.getElementsByClassName("value")[0].value;
-                            localStorage.setItem(localStorage.length, JSON.stringify(currentEmployee));
-                        } else {
-                            return;
-                        }
-                    } else {
-                        if (newFieldBool) {
-                            if (content.getElementsByClassName("key")[0].value[0] == "_") {
-                                alertError('Ключ не должен начинаться с "_"');
-                                return;
-                            }
-                            for (let i = 0; i < content.children.length - 2; i++) {
-                                currentEmployee[content.children[i].firstChild.innerHTML] =
-                                    content.children[i].lastChild.innerHTML;
-                            }
-                            currentEmployee[
-                                content.getElementsByClassName("key")[0].value
-                            ] = content.getElementsByClassName("value")[0].value;
-                        } else {
-                            for (const key of content.children) {
-                                currentEmployee[key.firstChild.innerHTML] = key.lastChild.innerHTML;
-                            }
-                        }
-                        for (const key in currentEmployee) {
-                            if (currentEmployee[key] == "") {
-                                delete currentEmployee[key];
-                            }
-                        }
-                        localStorage.setItem(_id, JSON.stringify(currentEmployee));
-                    }
-                    newEmployeeBool = false;
-                    newFieldBool = false;
-                    closeEditMode();
+            function closeEditMode() {
+                dispayData(false);
+                lockUnlockButtons(false, false, false, false, false, true, true);
+            }
+
+            function deleteEmployee() {
+                if (confirm(`Вы действительно хотите удалить "${currentEmployee.name}"`)) {
+                    localStorage.setItem(_id, localStorage.getItem(localStorage.length - 1));
+                    localStorage.removeItem(localStorage.length - 1);
+                    document.getElementById("main-photo").src = "";
+                    lockUnlockButtons(false, true, true, true, true, true, true);
+                    closePhotoUpload();
                     getList();
                 }
+            }
 
-                function alertError(text) {
-                    document.getElementById("error-window").innerHTML = `<p class="red-alert">${text}</p>`;
-                    document.getElementById("error-window").classList.toggle("active");
-                    setTimeout(() => {
-                        document.getElementById("error-window").classList.toggle("active");
-                    }, 2000);
+            function addField() {
+                if (newFieldBool) {
+                    return;
+                } else {
+                    lockUnlockButtons(false, true, true, true, true, false, true);
+                    content.innerHTML +=
+                        '<div class="block"><textarea class="key textarea" cols="10" rows="1"></textarea><textarea class="value textarea" cols="10" rows="1"></textarea></div>';
+                    newFieldBool = true;
                 }
+            }
 
-                function saveCalendar(employee) {
-                    if (document.querySelector("div.calendar-table").lastElementChild.nodeName === "P") {
-                        return;
+            function discardChanges() {
+                if (newEmployeeBool) {
+                    lockUnlockButtons(false, true, true, true, true, true, true);
+                    content.innerHTML = "";
+                    document.getElementById("new-employee-li").remove();
+                    newEmployeeBool = false;
+                }
+                closeEditMode();
+                newFieldBool = false;
+            }
+
+            function saveChanges() {
+                console.log(_id, currentEmployee);
+                if (newEmployeeBool) {
+                    if (newFieldBool) {
+                        if (content.getElementsByClassName("key")[0].value[0] == "_") {
+                            alertError('Ключ не должен начинаться с "_"');
+                            return;
+                        }
+                        currentEmployee[
+                            content.getElementsByClassName("key")[0].value
+                        ] = content.getElementsByClassName("value")[0].value;
+                        localStorage.setItem(localStorage.length, JSON.stringify(currentEmployee));
                     } else {
-                        currentEmployee._calendar = workingDays;
-                        let p = document.createElement("p");
-                        p.innerHTML = "сохранено";
-                        document.querySelector("div.calendar-table").appendChild(p);
-                        saveChanges();
+                        return;
                     }
-                }
-
-                function calendarSet5na2(employee) {
-                    const year = new Date().getFullYear();
-                    const month = new Date().getMonth();
-                    const monthStart = month + (monthInput ?? 0);
-
-                    let lastWeekDay = new Date(year, monthStart + 1, 0).getDay();
-                    let startWeekDay = new Date(year, monthStart, 0).getDay();
-                    let dateStart = new Date(year, monthStart, 1 - startWeekDay);
-                    let dateEnd = new Date(year, monthStart + 1, 8 - lastWeekDay);
-
-                    for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
-                        if (dateStart.getDay() < 6 && dateStart.getDay() > 0) {
-                            workingDays.push(
-                                `${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`
-                            );
-                        } else {
-                            let i = workingDays.findIndex(
-                                (elem) =>
-                                    elem === `${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`
-                            );
-                            if (i > 0) workingDays.splice(i, 1);
+                } else if (fromCalendarBool) {
+                    localStorage.setItem(_id, JSON.stringify(currentEmployee));
+                } else {
+                    if (newFieldBool) {
+                        if (content.querySelector("textarea.key").value[0] == "_") {
+                            alertError('Ключ не должен начинаться с "_"');
+                            return;
+                        }
+                        if (currentEmployee[content.querySelector("textarea.key").value] === "undefined") {
+                            return;
+                        }
+                        for (let i = 0; i < content.children.length - 2; i++) {
+                            currentEmployee[content.children[i].firstChild.innerHTML] =
+                                content.children[i].lastChild.innerHTML;
+                        }
+                        currentEmployee[content.querySelector("textarea.key").value] = content.querySelector(
+                            "textarea.value"
+                        ).value;
+                    } else {
+                        for (const key of content.children) {
+                            currentEmployee[key.firstChild.innerHTML] = key.lastChild.innerHTML;
                         }
                     }
+                    for (const key in currentEmployee) {
+                        if (currentEmployee[key] == "") {
+                            delete currentEmployee[key];
+                        }
+                    }
+                    localStorage.setItem(_id, JSON.stringify(currentEmployee));
+                }
+                _id = _id ?? localStorage.length - 1;
+                fromCalendarBool = false;
+                newEmployeeBool = false;
+                newFieldBool = false;
+                closeEditMode();
+                getList();
+            }
+
+            function alertError(text) {
+                document.getElementById("error-window").innerHTML = `<p class="red-alert">${text}</p>`;
+                document.getElementById("error-window").classList.toggle("active");
+                setTimeout(() => {
+                    document.getElementById("error-window").classList.toggle("active");
+                }, 2000);
+            }
+
+            function saveCalendar(employee) {
+                fromCalendarBool = true;
+                if (document.querySelector("div.calendar-table").lastElementChild.nodeName === "P") {
+                } else {
+                    currentEmployee._calendar = workingDays;
+                    let p = document.createElement("p");
+                    p.innerHTML = "сохранено";
+                    document.querySelector("div.calendar-table").appendChild(p);
+                }
+                saveChanges();
+            }
+
+            function calendarSet5na2(employee) {
+                const year = new Date().getFullYear();
+                const month = new Date().getMonth();
+                const monthStart = month + (monthInput ?? 0);
+
+                let lastWeekDay = new Date(year, monthStart + 1, 0).getDay();
+                let startWeekDay = new Date(year, monthStart, 0).getDay();
+                let dateStart = new Date(year, monthStart, 1 - startWeekDay);
+                let dateEnd = new Date(year, monthStart + 1, 8 - lastWeekDay);
+
+                for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
+                    if (dateStart.getDay() < 6 && dateStart.getDay() > 0) {
+                        workingDays.push(`${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`);
+                    } else {
+                        let i = workingDays.findIndex(
+                            (elem) =>
+                                elem === `${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`
+                        );
+                        if (i > 0) workingDays.splice(i, 1);
+                    }
+                }
+                document.querySelector("div.calendar-table").innerHTML = "";
+                renderCalendar(monthInput);
+            }
+
+            function clearCalendar() {
+                if (confirm("Вы действительно хотите очистить кадендарь?")) {
+                    workingDays = [];
                     document.querySelector("div.calendar-table").innerHTML = "";
                     renderCalendar(monthInput);
                 }
+            }
 
-                function clearCalendar() {
-                    if (confirm("Вы действительно хотите очистить кадендарь?")) {
-                        workingDays = [];
-                        document.querySelector("div.calendar-table").innerHTML = "";
-                        renderCalendar(monthInput);
+            function renderCalendar(monthInput) {
+                const year = new Date().getFullYear();
+                const month = new Date().getMonth();
+                const today = new Date().getDate();
+                const monthStart = month + (monthInput ?? 0);
+                const cell = document.querySelector("div.calendar-table");
+                const months = [
+                    "Январь",
+                    "Февраль",
+                    "Март",
+                    "Апрель",
+                    "Май",
+                    "Июнь",
+                    "Июль",
+                    "Август",
+                    "Сентябрь",
+                    "Октябрь",
+                    "Ноябрь",
+                    "Декабрь",
+                ];
+
+                let lastWeekDay = new Date(year, monthStart + 1, 0).getDay();
+                let startWeekDay = new Date(year, monthStart, 0).getDay();
+                let dateStart = new Date(year, monthStart);
+                let dateEnd = new Date(year, monthStart + 1);
+                let dateNow = new Date(year, month, today);
+
+                let monthToDisplay = monthStart;
+                let calendarHeader = document.createElement("div");
+                let calendarContent = document.createElement("div");
+                let weekElem = document.createElement("div");
+                let btn = document.createElement("button");
+
+                calendarHeader.innerHTML = `<span>${year}</span> <span>${months[monthStart % 12]}</span>`;
+                calendarHeader.className = "calendar-header";
+                btn.className = "calendar-edit-btn";
+                weekElem.className = "week";
+                calendarContent.className = "calendar-content";
+
+                calendarHeader.appendChild(btn);
+                cell.appendChild(calendarHeader);
+                cell.appendChild(calendarContent);
+
+                for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
+                    monthToDisplay = dateStart.getMonth();
+                    let day = document.createElement("div");
+                    day.className = "day month";
+                    day.dataset.date = `${dateStart.getDate()}-${monthToDisplay}-${year}`;
+                    if (workingDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
+                        day.style.backgroundColor = "#DDFFD8";
                     }
-                }
-
-                function renderCalendar(monthInput) {
-                    const year = new Date().getFullYear();
-                    const month = new Date().getMonth();
-                    const today = new Date().getDate();
-                    const monthStart = month + (monthInput ?? 0);
-                    const cell = document.querySelector("div.calendar-table");
-                    const months = [
-                        "Январь",
-                        "Февраль",
-                        "Март",
-                        "Апрель",
-                        "Май",
-                        "Июнь",
-                        "Июль",
-                        "Август",
-                        "Сентябрь",
-                        "Октябрь",
-                        "Ноябрь",
-                        "Декабрь",
-                    ];
-
-                    let lastWeekDay = new Date(year, monthStart + 1, 0).getDay();
-                    let startWeekDay = new Date(year, monthStart, 0).getDay();
-                    let dateStart = new Date(year, monthStart, 1 - startWeekDay);
-                    let dateEnd = new Date(year, monthStart + 1, 8 - lastWeekDay);
-                    let dateNow = new Date(year, month, today);
-
-                    let weekElem = document.createElement("div");
-                    let p = document.createElement("p");
-                    p.innerHTML = months[monthStart % 12] + " " + year;
-                    let monthToDisplay = monthStart;
-                    weekElem.className = "week";
-                    cell.appendChild(p);
-                    cell.appendChild(weekElem);
-
-                    for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
-                        monthToDisplay = dateStart.getMonth();
-                        let day = document.createElement("div");
-                        day.className = "day month" + monthToDisplay;
-                        day.dataset.date = `${dateStart.getDate()}-${monthToDisplay}-${year}`;
+                    day.innerHTML = dateStart.getDate();
+                    day.onclick = () => {
                         if (workingDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
-                            day.style.border = "5px solid lightblue";
-                            day.style.margin = "0";
+                            let i = workingDays.findIndex((elem) => elem === day.dataset.date);
+                            workingDays.splice(i, 1);
+                        } else {
+                            workingDays.push(day.dataset.date);
                         }
-                        day.innerHTML = dateStart.getDate();
-                        day.onclick = () => {
-                            if (workingDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
-                                let i = workingDays.findIndex((elem) => elem === day.dataset.date);
-                                workingDays.splice(i, 1);
-                                day.style.border = "none";
-                                day.style.margin = "5px";
-                            } else {
-                                day.style.border = "5px solid lightblue";
-                                day.style.margin = "0";
-                                workingDays.push(day.dataset.date);
-                            }
-                        };
-                        if (+dateStart == +dateNow) {
-                            day.style.backgroundColor = "#ffc290";
-                        }
-                        weekElem.appendChild(day);
-                        if (dateStart.getDay() == 0) {
-                            weekElem = document.createElement("div");
-                            weekElem.className = "week";
-                            cell.appendChild(weekElem);
-                        }
+                        createCalendarOptoins(day);
+                    };
+                    if (+dateStart == +dateNow) {
+                        day.style.backgroundColor = "#ffc290";
+                    }
+                    weekElem.appendChild(day);
+                    if (dateStart.getDay() == 0) {
+                        calendarContent.appendChild(weekElem);
+                        weekElem = document.createElement("div");
+                        weekElem.className = "week";
                     }
                 }
+                calendarContent.appendChild(weekElem);
+                weekElem = document.createElement("div");
+                weekElem.className = "week";
+            }
 
-                function eventClickToClose() {
-                    if (eventMouseoutBool && calendarIsOpenBool) {
-                        displayCalendar();
-                    }
+            function createCalendarOptoins(el, dataset, dir) {
+                let div = document.createElement("div");
+                let dropContent = document.createElement("div");
+                let svg = document.createElement("div");
+                let option = document.createElement("div");
+
+                let weekend = document.createElement("div");
+                let holiday = document.createElement("div");
+                let work = document.createElement("div");
+                let dot = document.createElement("div");
+
+                svg.innerHTML = `
+                    <svg width="40" height="80" viewBox="0 0 107 201" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M106.311 7.37229e-07C102.192 25.4534 80.116 44.8894 53.5 44.8894C26.884 44.8894 4.80753 25.4534 0.689281 0C0.236298 2.56153 0 5.19787 0 7.88939V155.889C0 180.742 20.1472 200.889 45 200.889H62C86.8528 200.889 107 180.742 107 155.889V7.88939C107 5.19786 106.764 2.56153 106.311 7.37229e-07Z" fill="#E7EFF1" fill-opacity="0.83"/>
+                    </svg>
+                    `;
+                div.className = "drop-down-menu";
+                dropContent.className = "drop-down-menu-content";
+                option.className = "drop-down-menu-options";
+                weekend.className = "drop-down-menu-weekend";
+                holiday.className = "drop-down-menu-holiday";
+                work.className = "drop-down-menu-work";
+                dot.className = "drop-down-menu-dot";
+
+                weekend.innerHTML = '<div class="drop-down-menu-dot"></div><span>Выходной</span>';
+                holiday.innerHTML = '<div class="drop-down-menu-dot"></div><span>В отпуске</span>';
+                work.innerHTML = '<div class="drop-down-menu-dot"></div><span>Работает</span>';
+                dropContent.appendChild(weekend);
+                dropContent.appendChild(holiday);
+                dropContent.appendChild(work);
+                div.appendChild(svg);
+                div.appendChild(dropContent);
+                el.appendChild(div);
+            }
+
+            function eventClickToClose() {
+                if (eventMouseoutBool && calendarIsOpenBool) {
+                    displayCalendar();
                 }
-            })();
+            }
         </script>
     </body>
 </html>
