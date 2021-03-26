@@ -247,38 +247,56 @@ p {
     width: 200px;
     border-radius: 100px;
 }
-#photo-upload {
+#photo-upload,
+#error-window {
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 16px;
+    color: #fff;
+    background-color: #7a8d93;
     position: absolute;
     margin: 20px;
     top: 10%;
-    background-color: #98afb6;
     border-radius: 20px;
     padding: 10px;
     width: 270px;
-    height: 100px;
-    z-index: 1;
+    height: 160px;
     transition: opacity linear 0.3s;
     opacity: 0;
-}
-#photo-upload.active {
-    -webkit-animation-name: fade;
-    animation-name: fade;
-    opacity: 1;
-}
-.red-alert {
-    color: red;
 }
 #error-window {
-    position: absolute;
-    display: inline;
-    margin: 20px;
-    top: 10%;
-    background-color: darkgrey;
-    width: 300px;
-    height: 100px;
-    transition: opacity linear 0.3s;
-    opacity: 0;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+#photo-upload {
+    z-index: 2;
+}
+#photo-upload input {
+    padding: 2px 10px 2px 10px;
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    color: #fff;
+    margin: 10px;
+    border-radius: 10px;
+}
+#photo-upload input[type="text"] {
+    font-size: 12px;
+    width: 200px;
+    color: #757575;
+    text-align: center;
+}
+#photo-upload input[type="button"] {
+    background-color: #7a8d93;
+    border: 2px solid #ddffd8;
+    box-sizing: border-box;
+    border-radius: 10px;
+    transition: linear 0.3s;
+}
+#photo-upload.active,
 #error-window.active {
     -webkit-animation-name: fade;
     animation-name: fade;
@@ -309,7 +327,7 @@ p {
 #calendar-opened.active {
     -webkit-animation-name: fade;
     animation-name: fade;
-    z-index: 1;
+    z-index: 5;
     opacity: 1;
 }
 .calendar-edit-btn {
