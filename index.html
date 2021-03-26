@@ -46,14 +46,26 @@
                     </div>
                     <div class="calendar-field">
                         <div id="calendar-opened" class="">
+                            <div id="months-menu">
+                                <button>Январь</button>
+                                <button>Февраль</button>
+                                <button>Март</button>
+                                <button>Апрель</button>
+                                <button>Май</button>
+                                <button>Июнь</button>
+                                <button>Июль</button>
+                                <button>Август</button>
+                                <button>Сентябрь</button>
+                                <button>Октябрь</button>
+                                <button>Ноябрь</button>
+                                <button>Декабрь</button>
+                            </div>
                             <div class="calendar-table"></div>
                             <div class="calendar-settings">
-                                <button id="calendar-left">Влево</button>
                                 <button id="calendar-set-5na2">Установить 5/2</button>
                                 <br />
                                 <button id="calendar-clear">Очистить полностью</button>
                                 <button id="calendar-save">Сохранить</button>
-                                <button id="calendar-right">Вправо</button>
                             </div>
                         </div>
                         <div class="calendar-display-main"></div>
@@ -160,7 +172,7 @@
             let eventMouseoutBool = false;
             let calendarIsOpenBool = false;
             let fromCalendarBool = false;
-            let monthInput = 0;
+            let monthInput = new Date().getMonth();
             let content = document.getElementById("content");
 
             const svgBtnAddFieldBlock = `
@@ -177,6 +189,8 @@
 
             let _id;
             let workingDays = [];
+            let holidayDays = [];
+            let weekendDays = [];
             let currentEmployee = {};
 
             lockUnlockButtons(false, true, true, true, true, true, true);
@@ -191,16 +205,6 @@
             document.getElementById("calendar-set-5na2").onclick = calendarSet5na2;
             document.getElementById("calendar-clear").onclick = clearCalendar;
             document.getElementById("calendar-save").onclick = saveCalendar;
-            document.getElementById("calendar-left").onclick = () => {
-                monthInput--;
-                document.querySelector("div.calendar-table").innerHTML = "";
-                renderCalendar(monthInput);
-            };
-            document.getElementById("calendar-right").onclick = () => {
-                monthInput++;
-                document.querySelector("div.calendar-table").innerHTML = "";
-                renderCalendar(monthInput);
-            };
             document.getElementById("hide").onclick = () => {
                 document.getElementById("left").classList.toggle("hidden");
                 document.querySelectorAll(".block").forEach((e) => e.classList.toggle("opened"));
@@ -209,6 +213,18 @@
             document.getElementById("change-photo-btn").onclick = () => {
                 document.getElementById("photo-upload").classList.toggle("active");
             };
+            let i = 0;
+            for (const iterator of document.getElementById("months-menu").children) {
+                console.log(iterator, i);
+                iterator.dataset.month = i;
+                iterator.onclick = () => {
+                    document.querySelector("div.calendar-table").innerHTML = "";
+                    console.log(iterator.dataset.month);
+                    monthInput = iterator.dataset.month;
+                    renderCalendar(iterator.dataset.month);
+                };
+                i++;
+            }
 
             function lockUnlockButtons(add, calendar, photo, editMode, deleteBtn, discardSave, addFied) {
                 document.getElementById("add-employee").disabled = add;
@@ -272,7 +288,9 @@
                 } else {
                     document.getElementById("main-photo").src = "";
                 }
-                workingDays = currentEmployee._calendar ?? [];
+                workingDays = currentEmployee._calendarWorkingDays ?? [];
+                holidayDays = currentEmployee._calendarHolidayDays ?? [];
+                weekendDays = currentEmployee._calendarWeekendDays ?? [];
                 closePhotoUpload();
             }
 
@@ -336,6 +354,7 @@
                     document.getElementById("calendar-opened").className = "";
                     calendarIsOpenBool = false;
                     document.querySelector("div.calendar-table").innerHTML = "";
+                    document.querySelector("#months-menu").classList.remove("active");
                 } else {
                     document.getElementById("calendar-opened").addEventListener("mouseout", () => {
                         eventMouseoutBool = true;
@@ -359,11 +378,13 @@
             function photoUpload() {
                 let pathToFile = document.getElementById("path-to-photo").value;
                 if (pathToFile) {
+                    let oldPathToPhoto = currentEmployee._pathToPhoto;
                     currentEmployee._pathToPhoto = pathToFile;
                     let img = document.getElementById("main-photo");
                     img.onerror = (e) => {
                         alertError("Ошибка, файл не найден");
-                        currentEmployee._pathToPhoto = "";
+                        currentEmployee._pathToPhoto = oldPathToPhoto;
+                        oldPathToPhoto = "";
                         saveChanges();
                     };
                     img.src = pathToFile;
@@ -442,6 +463,7 @@
                         return;
                     }
                 } else if (fromCalendarBool) {
+                    console.log(currentEmployee);
                     localStorage.setItem(_id, JSON.stringify(currentEmployee));
                 } else {
                     if (newFieldBool) {
@@ -488,10 +510,13 @@
             }
 
             function saveCalendar(employee) {
+                console.log(workingDays, holidayDays, weekendDays);
                 fromCalendarBool = true;
                 if (document.querySelector("div.calendar-table").lastElementChild.nodeName === "P") {
                 } else {
-                    currentEmployee._calendar = workingDays;
+                    currentEmployee._calendarWorkingDays = workingDays;
+                    currentEmployee._calendarHolidayDays = holidayDays;
+                    currentEmployee._calendarWeekendDays = weekendDays;
                     let p = document.createElement("p");
                     p.innerHTML = "сохранено";
                     document.querySelector("div.calendar-table").appendChild(p);
@@ -527,16 +552,19 @@
             function clearCalendar() {
                 if (confirm("Вы действительно хотите очистить кадендарь?")) {
                     workingDays = [];
+                    holidayDays = [];
+                    weekendDays = [];
                     document.querySelector("div.calendar-table").innerHTML = "";
                     renderCalendar(monthInput);
                 }
             }
 
             function renderCalendar(monthInput) {
+                document.querySelector("div.calendar-table").innerHTML = "";
                 const year = new Date().getFullYear();
                 const month = new Date().getMonth();
                 const today = new Date().getDate();
-                const monthStart = month + (monthInput ?? 0);
+                const monthStart = Number(monthInput ?? month);
                 const cell = document.querySelector("div.calendar-table");
                 const months = [
                     "Январь",
@@ -565,9 +593,12 @@
                 let weekElem = document.createElement("div");
                 let btn = document.createElement("button");
 
-                calendarHeader.innerHTML = `<span>${year}</span> <span>${months[monthStart % 12]}</span>`;
+                calendarHeader.innerHTML = `<span>${year}</span> <span id="months-btn">${
+                    months[monthStart % 12]
+                }</span>`;
                 calendarHeader.className = "calendar-header";
                 btn.className = "calendar-edit-btn";
+                btn.innerHTML = "Изменить";
                 weekElem.className = "week";
                 calendarContent.className = "calendar-content";
 
@@ -581,21 +612,21 @@
                     day.className = "day month";
                     day.dataset.date = `${dateStart.getDate()}-${monthToDisplay}-${year}`;
                     if (workingDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
-                        day.style.backgroundColor = "#DDFFD8";
+                        day.style.backgroundColor = "#ddffd8";
+                    }
+                    if (holidayDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
+                        day.style.backgroundColor = "#fff7b0";
+                    }
+                    if (weekendDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
+                        day.style.backgroundColor = "#ffd8d8";
                     }
                     day.innerHTML = dateStart.getDate();
                     day.onclick = () => {
-                        if (workingDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
-                            let i = workingDays.findIndex((elem) => elem === day.dataset.date);
-                            workingDays.splice(i, 1);
-                        } else {
-                            workingDays.push(day.dataset.date);
-                        }
-                        createCalendarOptoins(day);
+                        createCalendarOptions(day, false, day.dataset.date);
                     };
-                    if (+dateStart == +dateNow) {
-                        day.style.backgroundColor = "#ffc290";
-                    }
+                    // if (+dateStart == +dateNow) {
+                    //     day.style.border = "#757971 2px solid";
+                    // }
                     weekElem.appendChild(day);
                     if (dateStart.getDay() == 0) {
                         calendarContent.appendChild(weekElem);
@@ -606,41 +637,79 @@
                 calendarContent.appendChild(weekElem);
                 weekElem = document.createElement("div");
                 weekElem.className = "week";
+
+                document.querySelector("#months-btn").onclick = () => {
+                    document.querySelector("#months-menu").classList.toggle("active");
+                };
             }
 
-            function createCalendarOptoins(el, dataset, dir) {
-                let div = document.createElement("div");
-                let dropContent = document.createElement("div");
-                let svg = document.createElement("div");
-                let option = document.createElement("div");
+            function createCalendarOptions(el, leftDirection, dataset) {
+                if (el.querySelector("div")) {
+                    el.querySelector("div").remove();
+                } else {
+                    let div = document.createElement("div");
+                    let dropContent = document.createElement("div");
+                    let svg = document.createElement("div");
+                    let option = document.createElement("div");
 
-                let weekend = document.createElement("div");
-                let holiday = document.createElement("div");
-                let work = document.createElement("div");
-                let dot = document.createElement("div");
+                    let weekend = document.createElement("div");
+                    let holiday = document.createElement("div");
+                    let work = document.createElement("div");
+                    let dot = document.createElement("div");
 
-                svg.innerHTML = `
+                    svg.innerHTML = `
                     <svg width="40" height="80" viewBox="0 0 107 201" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M106.311 7.37229e-07C102.192 25.4534 80.116 44.8894 53.5 44.8894C26.884 44.8894 4.80753 25.4534 0.689281 0C0.236298 2.56153 0 5.19787 0 7.88939V155.889C0 180.742 20.1472 200.889 45 200.889H62C86.8528 200.889 107 180.742 107 155.889V7.88939C107 5.19786 106.764 2.56153 106.311 7.37229e-07Z" fill="#E7EFF1" fill-opacity="0.83"/>
                     </svg>
                     `;
-                div.className = "drop-down-menu";
-                dropContent.className = "drop-down-menu-content";
-                option.className = "drop-down-menu-options";
-                weekend.className = "drop-down-menu-weekend";
-                holiday.className = "drop-down-menu-holiday";
-                work.className = "drop-down-menu-work";
-                dot.className = "drop-down-menu-dot";
+                    div.className = "drop-down-menu";
+                    dropContent.className = "drop-down-menu-content";
+                    option.className = "drop-down-menu-options";
+                    weekend.onclick = () => {
+                        addDayToAnArr(dataset, weekendDays);
+                        el.style.backgroundColor = "#ffd8d8";
+                    };
+                    weekend.className = "drop-down-menu-weekend";
+                    holiday.onclick = () => {
+                        addDayToAnArr(dataset, holidayDays);
+                        el.style.backgroundColor = "#fff7b0";
+                    };
 
-                weekend.innerHTML = '<div class="drop-down-menu-dot"></div><span>Выходной</span>';
-                holiday.innerHTML = '<div class="drop-down-menu-dot"></div><span>В отпуске</span>';
-                work.innerHTML = '<div class="drop-down-menu-dot"></div><span>Работает</span>';
-                dropContent.appendChild(weekend);
-                dropContent.appendChild(holiday);
-                dropContent.appendChild(work);
-                div.appendChild(svg);
-                div.appendChild(dropContent);
-                el.appendChild(div);
+                    holiday.className = "drop-down-menu-holiday";
+                    work.onclick = () => {
+                        addDayToAnArr(dataset, workingDays);
+                        el.style.backgroundColor = "#ddffd8";
+                    };
+                    work.className = "drop-down-menu-work";
+                    dot.className = "drop-down-menu-dot";
+
+                    weekend.innerHTML = '<div class="drop-down-menu-dot"></div><span>Выходной</span>';
+                    holiday.innerHTML = '<div class="drop-down-menu-dot"></div><span>В отпуске</span>';
+                    work.innerHTML = '<div class="drop-down-menu-dot"></div><span>Работает</span>';
+                    dropContent.appendChild(weekend);
+                    dropContent.appendChild(holiday);
+                    dropContent.appendChild(work);
+                    div.appendChild(svg);
+                    div.appendChild(dropContent);
+                    el.appendChild(div);
+                }
+            }
+
+            function addDayToAnArr(day, arr, str) {
+                if (workingDays.findIndex((elem) => elem === day) >= 0) {
+                    let i = workingDays.findIndex((elem) => elem === day);
+                    workingDays.splice(i, 1);
+                }
+                if (holidayDays.findIndex((elem) => elem === day) >= 0) {
+                    let i = holidayDays.findIndex((elem) => elem === day);
+                    holidayDays.splice(i, 1);
+                }
+                if (weekendDays.findIndex((elem) => elem === day) >= 0) {
+                    let i = weekendDays.findIndex((elem) => elem === day);
+                    weekendDays.splice(i, 1);
+                }
+
+                arr.push(day);
             }
 
             function eventClickToClose() {
