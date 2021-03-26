@@ -61,16 +61,14 @@
                                 <button>Декабрь</button>
                             </div>
                             <div class="calendar-table"></div>
-                            <div class="calendar-settings">
-                                <button id="calendar-set-5na2">Установить 5/2</button>
-                                <br />
-                                <button id="calendar-clear">Очистить полностью</button>
-                                <button id="calendar-save">Сохранить</button>
+                            <div class="calendar-settings-in-footer active">
+                                <button id="calendar-save" class="calendar-edit-btn">Сохранить</button>
+                                <button id="calendar-discard" class="calendar-edit-btn">Отменить</button>
                             </div>
                         </div>
+                        <!-- <div class="calendar-display-main"></div>
                         <div class="calendar-display-main"></div>
-                        <div class="calendar-display-main"></div>
-                        <div class="calendar-display-main"></div>
+                        <div class="calendar-display-main"></div> -->
                     </div>
                     <div id="settings">
                         <button id="change-photo-btn" class="btn">
@@ -202,9 +200,8 @@
             document.getElementById("delete-emloyee-btn").onclick = deleteEmployee;
             document.getElementById("discard").onclick = discardChanges;
             document.getElementById("save").onclick = saveChanges;
-            document.getElementById("calendar-set-5na2").onclick = calendarSet5na2;
-            document.getElementById("calendar-clear").onclick = clearCalendar;
             document.getElementById("calendar-save").onclick = saveCalendar;
+            document.getElementById("calendar-discard").onclick = discardCalendar;
             document.getElementById("hide").onclick = () => {
                 document.getElementById("left").classList.toggle("hidden");
                 document.querySelectorAll(".block").forEach((e) => e.classList.toggle("opened"));
@@ -215,11 +212,9 @@
             };
             let i = 0;
             for (const iterator of document.getElementById("months-menu").children) {
-                console.log(iterator, i);
                 iterator.dataset.month = i;
                 iterator.onclick = () => {
                     document.querySelector("div.calendar-table").innerHTML = "";
-                    console.log(iterator.dataset.month);
                     monthInput = iterator.dataset.month;
                     renderCalendar(iterator.dataset.month);
                 };
@@ -266,8 +261,22 @@
                     img.src = employee._pathToPhoto;
                 }
                 div.className = "list-item";
-                p.innerHTML = employee.name;
                 div.appendChild(img);
+                p.innerHTML = (employee.Имя ?? "") + " " + (employee.Фамилия ?? "");
+                div.appendChild(p);
+                p = document.createElement("p");
+                if (employee.Возраст) {
+                    if (employee.Возраст % 10 == 1) {
+                        p.innerHTML = employee.Возраст + " год";
+                    } else if (employee.Возраст % 10 > 1 && employee.Возраст % 10 < 5) {
+                        p.innerHTML = employee.Возраст + " года";
+                    } else {
+                        p.innerHTML = employee.Возраст + " лет";
+                    }
+                }
+                div.appendChild(p);
+                p = document.createElement("p");
+                p.innerHTML = employee.Должность ?? "";
                 div.appendChild(p);
                 div.onclick = () => getEmloyeeDataFromStorage(key);
                 list.appendChild(div);
@@ -510,7 +519,6 @@
             }
 
             function saveCalendar(employee) {
-                console.log(workingDays, holidayDays, weekendDays);
                 fromCalendarBool = true;
                 if (document.querySelector("div.calendar-table").lastElementChild.nodeName === "P") {
                 } else {
@@ -518,31 +526,62 @@
                     currentEmployee._calendarHolidayDays = holidayDays;
                     currentEmployee._calendarWeekendDays = weekendDays;
                     let p = document.createElement("p");
+                    p.className = "calendar-content";
                     p.innerHTML = "сохранено";
                     document.querySelector("div.calendar-table").appendChild(p);
                 }
                 saveChanges();
             }
 
-            function calendarSet5na2(employee) {
+            function discardCalendar() {
+                workingDays = currentEmployee._calendarWorkingDays;
+                holidayDays = currentEmployee._calendarHolidayDays;
+                weekendDays = currentEmployee._calendarWeekendDays;
+
+                renderCalendar(monthInput);
+            }
+
+            function calendarSet5na2() {
                 const year = new Date().getFullYear();
                 const month = new Date().getMonth();
                 const monthStart = month + (monthInput ?? 0);
 
-                let lastWeekDay = new Date(year, monthStart + 1, 0).getDay();
-                let startWeekDay = new Date(year, monthStart, 0).getDay();
-                let dateStart = new Date(year, monthStart, 1 - startWeekDay);
-                let dateEnd = new Date(year, monthStart + 1, 8 - lastWeekDay);
+                let dateStart = new Date(year, monthStart);
+                let dateEnd = new Date(year, monthStart + 1);
 
                 for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
                     if (dateStart.getDay() < 6 && dateStart.getDay() > 0) {
                         workingDays.push(`${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`);
-                    } else {
-                        let i = workingDays.findIndex(
-                            (elem) =>
-                                elem === `${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`
+                        console.log(
+                            `${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`,
+                            dateStart
                         );
-                        if (i > 0) workingDays.splice(i, 1);
+                        console.log(workingDays);
+                    } else {
+                    }
+                }
+                document.querySelector("div.calendar-table").innerHTML = "";
+                renderCalendar(monthInput);
+            }
+
+            function calendarSet2na2() {
+                const year = new Date().getFullYear();
+                const month = new Date().getMonth();
+                const monthStart = month + (monthInput ?? 0);
+
+                let dateStart = new Date(year, monthStart);
+                let dateEnd = new Date(year, monthStart + 1);
+                let i = 0;
+                let j = 0;
+
+                for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
+                    if (i < 2) {
+                        workingDays.push(`${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`);
+                        console.log(`${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`);
+                        i++;
+                    } else {
+                        i--;
+                        j++;
                     }
                 }
                 document.querySelector("div.calendar-table").innerHTML = "";
@@ -566,20 +605,6 @@
                 const today = new Date().getDate();
                 const monthStart = Number(monthInput ?? month);
                 const cell = document.querySelector("div.calendar-table");
-                const months = [
-                    "Январь",
-                    "Февраль",
-                    "Март",
-                    "Апрель",
-                    "Май",
-                    "Июнь",
-                    "Июль",
-                    "Август",
-                    "Сентябрь",
-                    "Октябрь",
-                    "Ноябрь",
-                    "Декабрь",
-                ];
 
                 let lastWeekDay = new Date(year, monthStart + 1, 0).getDay();
                 let startWeekDay = new Date(year, monthStart, 0).getDay();
@@ -588,22 +613,13 @@
                 let dateNow = new Date(year, month, today);
 
                 let monthToDisplay = monthStart;
-                let calendarHeader = document.createElement("div");
                 let calendarContent = document.createElement("div");
                 let weekElem = document.createElement("div");
-                let btn = document.createElement("button");
 
-                calendarHeader.innerHTML = `<span>${year}</span> <span id="months-btn">${
-                    months[monthStart % 12]
-                }</span>`;
-                calendarHeader.className = "calendar-header";
-                btn.className = "calendar-edit-btn";
-                btn.innerHTML = "Изменить";
                 weekElem.className = "week";
                 calendarContent.className = "calendar-content";
 
-                calendarHeader.appendChild(btn);
-                cell.appendChild(calendarHeader);
+                calendarCreateHeader(cell, monthStart);
                 cell.appendChild(calendarContent);
 
                 for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
@@ -613,6 +629,7 @@
                     day.dataset.date = `${dateStart.getDate()}-${monthToDisplay}-${year}`;
                     if (workingDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
                         day.style.backgroundColor = "#ddffd8";
+                        console.log("workingDays");
                     }
                     if (holidayDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
                         day.style.backgroundColor = "#fff7b0";
@@ -641,6 +658,37 @@
                 document.querySelector("#months-btn").onclick = () => {
                     document.querySelector("#months-menu").classList.toggle("active");
                 };
+            }
+
+            function calendarCreateHeader(el, month) {
+                let calendarHeader = document.createElement("div");
+                const months = [
+                    "Январь",
+                    "Февраль",
+                    "Март",
+                    "Апрель",
+                    "Май",
+                    "Июнь",
+                    "Июль",
+                    "Август",
+                    "Сентябрь",
+                    "Октябрь",
+                    "Ноябрь",
+                    "Декабрь",
+                ];
+                let clear = document.createElement("button");
+                clear.innerHTML = "Очистить";
+                clear.className = "calendar-edit-btn";
+                clear.id = "calendar-clear";
+                clear.onclick = clearCalendar;
+
+                calendarHeader.innerHTML = `<span>${new Date().getFullYear()}</span> <span id="months-btn">${
+                    months[month % 12]
+                }</span>`;
+                calendarHeader.className = "calendar-header";
+
+                calendarHeader.appendChild(clear);
+                el.appendChild(calendarHeader);
             }
 
             function createCalendarOptions(el, leftDirection, dataset) {

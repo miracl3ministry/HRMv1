@@ -182,6 +182,18 @@ p {
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
+    /* display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; */
+}
+.list-item p {
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 16px;
+    color: #5b5858;
+    text-align: right;
+    padding: 10px;
 }
 .list-item img {
     width: 80px;
@@ -315,7 +327,6 @@ p {
 }
 .calendar-edit-btn:hover {
     cursor: pointer;
-    transform: scale(1.15);
 }
 .calendar-display-main {
     width: 15px;
@@ -349,8 +360,63 @@ p {
     color: rgba(91, 88, 88, 0.8);
     line-height: 40px;
 }
+.calendar-content + p {
+    color: #fff;
+}
 .calendar-content .week:first-child {
     justify-content: flex-end;
+}
+.calendar-settings {
+    display: none;
+    position: absolute;
+    font-family: Montserrat;
+    font-weight: 800;
+    font-size: 20px;
+    color: #7a8d93;
+    text-align: left;
+    background-color: #ccdde1;
+    padding: 8px 15px 8px 40px;
+    width: 375px;
+    line-height: 20px;
+}
+.calendar-settings.active {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.calendar-settings-in-footer {
+    display: none;
+    background-color: #7a8d93;
+    margin: auto;
+    text-align: center;
+}
+.calendar-settings-in-footer.active {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+#calendar-save {
+    border: 2px solid #ddffd8;
+    box-sizing: border-box;
+    border-radius: 10px;
+    transition: linear 0.3s;
+}
+#calendar-save:hover {
+    cursor: pointer;
+    transform: scale(1.15);
+}
+#calendar-discard {
+    border: 2px solid #ffd8d8;
+    box-sizing: border-box;
+    border-radius: 10px;
+    transition: linear 0.3s;
+}
+#calendar-discard:hover {
+    cursor: pointer;
+    transform: scale(1.15);
 }
 .week {
     display: flex;
