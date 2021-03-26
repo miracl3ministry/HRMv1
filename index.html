@@ -28,12 +28,7 @@
                     <div id="photo-upload">
                         <p>
                             Введите полный путь или ссылку на фото
-                            <input
-                                type="text"
-                                id="path-to-photo"
-                                placeholder="C:\сотрудник N\фото.jpg"
-                                required
-                            />
+                            <input type="text" id="path-to-photo" placeholder="C:\сотрудник N\фото.jpg" required />
                         </p>
                         <input type="button" value="Сохранить" id="input-upload-photo-submit" />
                     </div>
@@ -181,6 +176,7 @@
                             fill="#98AFB6"
                         />
                     </svg>`;
+
             let divSvgBtnAddFieldBlock = document.createElement("div");
             divSvgBtnAddFieldBlock.innerHTML = svgBtnAddFieldBlock;
             divSvgBtnAddFieldBlock.className = "block-add-employee svg-add-hover";
@@ -412,7 +408,6 @@
             }
 
             function openEditMode() {
-                console.log("openEditMode");
                 dispayData(true);
                 lockUnlockButtons(true, true, true, true, true, false, false);
                 closePhotoUpload();
@@ -457,7 +452,6 @@
             }
 
             function saveChanges() {
-                console.log(_id, currentEmployee);
                 if (newEmployeeBool) {
                     if (newFieldBool) {
                         if (content.getElementsByClassName("key")[0].value[0] == "_") {
@@ -472,7 +466,6 @@
                         return;
                     }
                 } else if (fromCalendarBool) {
-                    console.log(currentEmployee);
                     localStorage.setItem(_id, JSON.stringify(currentEmployee));
                 } else {
                     if (newFieldBool) {
@@ -496,7 +489,7 @@
                         }
                     }
                     for (const key in currentEmployee) {
-                        if (currentEmployee[key] == "") {
+                        if (currentEmployee[key] == "" || key == "undefined") {
                             delete currentEmployee[key];
                         }
                     }
@@ -554,11 +547,6 @@
                 for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
                     if (dateStart.getDay() < 6 && dateStart.getDay() > 0) {
                         workingDays.push(`${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`);
-                        console.log(
-                            `${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`,
-                            dateStart
-                        );
-                        console.log(workingDays);
                     } else {
                     }
                 }
@@ -579,7 +567,6 @@
                 for (; dateStart < dateEnd; dateStart.setDate(dateStart.getDate() + 1)) {
                     if (i < 2) {
                         workingDays.push(`${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`);
-                        console.log(`${dateStart.getDate()}-${dateStart.getMonth()}-${dateStart.getFullYear()}`);
                         i++;
                     } else {
                         i--;
@@ -631,7 +618,6 @@
                     day.dataset.date = `${dateStart.getDate()}-${monthToDisplay}-${year}`;
                     if (workingDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
                         day.style.backgroundColor = "#ddffd8";
-                        console.log("workingDays");
                     }
                     if (holidayDays.findIndex((elem) => elem === day.dataset.date) >= 0) {
                         day.style.backgroundColor = "#fff7b0";
