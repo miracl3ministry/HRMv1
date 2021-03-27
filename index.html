@@ -1097,7 +1097,13 @@
             }
 
             function deleteEmployee() {
-                if (confirm(`Вы действительно хотите удалить "${currentEmployee.name}"`)) {
+                if (
+                    confirm(
+                        `Вы действительно хотите удалить "${currentEmployee.Фамили ?? ""} ${
+                            currentEmployee.Имя ?? ""
+                        } ${currentEmployee.Отчество ?? ""}"`
+                    )
+                ) {
                     localStorage.setItem(_id, localStorage.getItem(localStorage.length - 1));
                     localStorage.removeItem(localStorage.length - 1);
                     document.getElementById("main-photo").src = "";
